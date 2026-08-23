@@ -9,6 +9,7 @@
  --bg:#08090b;--bg2:#0d0f12;--panel:#111418;--line:#252a30;
  --line2:#343a42;--text:#f5f6f7;--muted:#80868e;--dim:#555c65;
  --green:#6ee19b;--amber:#d8bc68;--red:#df747b;--blue:#5865F2;
+ --discord-card:#12151a;--discord-border:rgba(88,101,242,0.15);
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}
@@ -33,8 +34,9 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;
 .header-btn{border:1px solid var(--line2);background:#171a1e;color:#eee;
  border-radius:5px;padding:9px 14px;font-size:9px;font-weight:850;letter-spacing:1px}
 .ask-btn{border:0;background:var(--blue);color:#fff;border-radius:5px;
- padding:9px 16px;font-size:9px;font-weight:850;letter-spacing:1px;transition:opacity .15s}
-.ask-btn:hover{opacity:.85}
+ padding:9px 16px;font-size:9px;font-weight:850;letter-spacing:1px;transition:all .2s;
+ box-shadow:0 0 12px rgba(88,101,242,0.3)}
+.ask-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 0 18px rgba(88,101,242,0.5)}
 
 /* ── LAYOUT ── */
 .container{width:min(1180px,calc(100% - 42px));margin:auto;padding:45px 0 55px}
@@ -83,28 +85,31 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;
 footer{margin-top:40px;border-top:1px solid var(--line);padding-top:17px;
  display:flex;justify-content:space-between;color:#4f565e;font-size:8px;letter-spacing:1.4px}
 
-/* ── Q&A ── */
-.qa-wrap{margin-top:44px}
-.qa-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.qa-top-left h2{font-size:22px;margin:0 0 4px;letter-spacing:-.5px}
-.qa-top-left p{font-size:10px;color:var(--muted);margin:0}
-.qa-list{display:flex;flex-direction:column;gap:11px}
-.qa-empty{text-align:center;padding:48px 20px;color:var(--dim);font-size:11px;
- border:1px dashed #252a30;border-radius:8px;background:#0c0e11}
-.qa-card{background:var(--panel);border:1px solid var(--line);border-radius:9px;
- overflow:hidden;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-.qa-q{padding:17px 20px;border-bottom:1px solid var(--line)}
-.qa-q-tag{font-size:8px;color:var(--blue);font-weight:850;letter-spacing:2px;margin-bottom:7px}
-.qa-q-text{font-size:13px;line-height:1.55}
-.qa-meta{font-size:8px;color:var(--dim);margin-top:5px}
-.qa-a{padding:15px 20px;background:#0d1014}
-.qa-a-tag{font-size:8px;color:var(--green);font-weight:850;letter-spacing:2px;margin-bottom:7px}
-.qa-a-text{font-size:12px;color:#c5c9cf;line-height:1.6}
-.qa-pending{padding:14px 20px;background:#0c0e11;display:flex;align-items:center;gap:9px}
-.qa-pending span{font-size:9px;color:var(--dim)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--amber);animation:blink 1.4s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+/* ── PREMİUM S&C COMMUNITY PANEL ── */
+.qa-wrap{margin-top:48px}
+.qa-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.qa-top-left h2{font-size:24px;margin:0 0 6px;letter-spacing:-.5px;display:flex;align-items:center;gap:10px}
+.qa-top-left p{font-size:11px;color:var(--muted);margin:0}
+.qa-feed{display:flex;flex-direction:column;gap:16px}
+.qa-empty{text-align:center;padding:50px 20px;color:var(--dim);font-size:11px;border:1px dashed var(--line);border-radius:12px;background:#0a0c0f}
+
+.qa-card{background:var(--discord-card);border:1px solid var(--line);border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:border-color .2s}
+.qa-card:hover{border-color:var(--discord-border)}
+.qa-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.qa-user-info{display:flex;align-items:center;gap:10px}
+.qa-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2b323b,#1a1d24);border:1px solid rgba(255,255,255,.1);display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--blue)}
+.qa-avatar.admin-avatar{background:linear-gradient(135deg,#5865F2,#3b429f);color:#fff}
+.qa-user-details{display:flex;flex-direction:column}
+.qa-username{font-size:13px;font-weight:700;color:#f0f1f2;display:flex;align-items:center;gap:6px}
+.qa-timestamp{font-size:9px;color:var(--dim);margin-top:2px}
+
+.qa-q-box{background:rgba(0,0,0,.25);border-left:3px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.5;color:#dcddde;margin-bottom:14px}
+.qa-a-box{background:rgba(110,225,155,.03);border-left:3px solid var(--green);border:1px solid rgba(110,225,155,.1);border-left-width:3px;padding:14px 16px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.5;color:#e1e3e6}
+
+.qa-badge-official{font-size:8px;font-weight:850;padding:2px 6px;border-radius:3px;background:rgba(88,101,242,.2);color:#7983f5;border:1px solid rgba(88,101,242,.4);letter-spacing:.5px}
+.qa-pending-status{display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--amber);background:rgba(216,188,104,.06);padding:6px 12px;border-radius:20px;border:1px solid rgba(216,188,104,.15)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 1.5s infinite}
+@keyframes pulse{0%{opacity:.3;transform:scale(.9)}50%{opacity:1;transform:scale(1.2)}100%{opacity:.3;transform:scale(.9)}}
 
 /* ── MODALS ── */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;
@@ -113,13 +118,15 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:17px;
 .box{background:#111418;border:1px solid #353b43;border-radius:9px;
  padding:30px;box-shadow:0 30px 90px rgba(0,0,0,.7);animation:mIn .22s ease}
 @keyframes mIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
-.box-ask{width:450px}.box-login{width:410px}
+.box-ask{width:460px}.box-login{width:410px}
 .box h2{margin:0;font-size:19px}
 .box p{font-size:10px;color:var(--muted);margin:6px 0 17px}
+.inp-group{display:flex;flex-direction:column;gap:12px;margin-bottom:10px}
+.inp-label{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase}
 .inp{width:100%;background:#0b0d0f;border:1px solid #30363d;color:#fff;
- border-radius:5px;padding:13px;outline:0}
+ border-radius:6px;padding:12px 14px;outline:0;transition:border-color .2s}
 .inp:focus{border-color:var(--blue)}
-textarea.inp{min-height:110px;resize:vertical}
+textarea.inp{min-height:100px;resize:vertical}
 .err{height:18px;color:var(--red);font-size:9px;margin-top:7px}
 .sub{width:100%;margin-top:10px;background:var(--blue);color:#fff;border:0;
  border-radius:5px;padding:13px;font-size:9px;font-weight:850;letter-spacing:1px;transition:opacity .15s}
@@ -127,7 +134,7 @@ textarea.inp{min-height:110px;resize:vertical}
 .sub:hover{opacity:.85}.sub:disabled{opacity:.5;cursor:default}
 .cnl{width:100%;margin-top:8px;background:transparent;color:#777e86;
  border:1px solid var(--line);border-radius:5px;padding:10px;font-size:9px}
-.char-count{font-size:8px;color:var(--dim);text-align:right;margin-top:5px}
+.char-count{font-size:8px;color:var(--dim);text-align:right;margin-top:4px}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:#1c1e22;border:1px solid var(--line2);
@@ -279,13 +286,13 @@ textarea.inp{min-height:110px;resize:vertical}
  <div class="qa-wrap">
   <div class="qa-top">
    <div class="qa-top-left">
-    <h2>💬 Soru &amp; Cevap</h2>
-    <p>Sorunuzu sorun — Discord üzerinden yanıtlanınca burada görünür.</p>
+    <h2>💬 Topluluk Destek &amp; Soru Cevap</h2>
+    <p>Sorular doğrudan Discord sunucumuza iletilir ve ekibimiz tarafından yanıtlanır.</p>
    </div>
-   <button class="ask-btn" onclick="openAsk()">+ Soru Sor</button>
+   <button class="ask-btn" onclick="openAsk()">+ Soru Gönder</button>
   </div>
-  <div id="qaList" class="qa-list">
-   <div class="qa-empty" id="qaEmpty">Yükleniyor...</div>
+  <div id="qaList" class="qa-feed">
+   <div class="qa-empty" id="qaEmpty">Sorular yükleniyor...</div>
   </div>
  </div>
 
@@ -364,10 +371,19 @@ textarea.inp{min-height:110px;resize:vertical}
 <!-- ═══════════════ SORU SOR MODAL ═══════════════ -->
 <div id="askOverlay" class="overlay">
  <div class="box box-ask">
-  <h2>💬 Soru Sor</h2>
-  <p>Sorunuz Discord kanalına iletilecek, yanıtlanınca burada görünecek.</p>
-  <textarea id="qInput" class="inp" placeholder="Sorunuzu yazın..." maxlength="500"></textarea>
-  <div class="char-count"><span id="charN">0</span>/500</div>
+  <h2>💬 Yeni Soru Gönder</h2>
+  <p>Sorunuz Discord ekibimize iletilecek ve yanıtlandığında burada yayınlanacaktır.</p>
+  <div class="inp-group">
+   <div>
+    <div class="inp-label">Kullanıcı Adınız</div>
+    <input id="userNameInput" class="inp" type="text" placeholder="Örn: Alex" maxlength="30">
+   </div>
+   <div>
+    <div class="inp-label">Sorunuz</div>
+    <textarea id="qInput" class="inp" placeholder="Neyi merak ediyorsunuz? Detaylıca yazın..." maxlength="500"></textarea>
+    <div class="char-count"><span id="charN">0</span>/500</div>
+   </div>
+  </div>
   <div id="askErr" class="err"></div>
   <button class="sub" id="askBtn" onclick="sendQuestion()">GÖNDER →</button>
   <button class="cnl" onclick="closeAsk()">VAZGEÇ</button>
@@ -389,26 +405,24 @@ textarea.inp{min-height:110px;resize:vertical}
 <div id="toast" class="toast"></div>
 
 <script>
-// ════════════ AYARLAR — BURAYA KENDİ DEĞERLERİNİ YAZ ════════════
+// ════════════ AYARLAR ════════════
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1541121158802571306/Mi3PtB0Ms08a79ocPoc8b_gjjrEpfs4B8lFQN30EBQmxRruo4HfLCkI5P3nkE4An-5dM";
-// Örnek: "https://discord.com/api/webhooks/123456/abcdef..."
-// Discord'da: Kanal Ayarları → Entegrasyonlar → Webhook Oluştur → URL kopyala
-
 const QA_RAW_URL  = "https://raw.githubusercontent.com/wentrashop/overclock/main/qa.json";
 const KEY_RAW_URL = "https://raw.githubusercontent.com/wentrashop/overclock/refs/heads/main/replace.json";
 
-const WH_PREFIX   = "📩 YENİ SORU:";  // bot.py ile aynı olmalı
-// ════════════════════════════════════════════════════════════════
+const WH_PREFIX   = "📩 YENİ SORU:"; 
+// ═════════════════════════════════
 
 let currentExpiry = null, players = 47, cs2Players = 0;
 
 // ─── SORU GÖNDER ───
 function openAsk(){
   document.getElementById("askOverlay").classList.add("show");
+  document.getElementById("userNameInput").value = "";
   document.getElementById("qInput").value = "";
   document.getElementById("askErr").textContent = "";
   document.getElementById("charN").textContent = "0";
-  setTimeout(()=>document.getElementById("qInput").focus(),60);
+  setTimeout(()=>document.getElementById("userNameInput").focus(),60);
 }
 function closeAsk(){ document.getElementById("askOverlay").classList.remove("show"); }
 
@@ -423,34 +437,37 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 async function sendQuestion(){
-  const q   = document.getElementById("qInput").value.trim();
-  const err = document.getElementById("askErr");
-  const btn = document.getElementById("askBtn");
-  if(!q){ err.textContent="Lütfen bir şeyler yazın."; return; }
+  const username = document.getElementById("userNameInput").value.trim();
+  const q        = document.getElementById("qInput").value.trim();
+  const err      = document.getElementById("askErr");
+  const btn      = document.getElementById("askBtn");
+  
+  if(!username){ err.textContent="Lütfen adınızı girin."; return; }
+  if(!q){ err.textContent="Lütfen sorunuzu yazın."; return; }
   if(q.length < 4){ err.textContent="Soru çok kısa."; return; }
 
   btn.disabled = true; btn.textContent = "GÖNDERİLİYOR..."; err.textContent = "";
 
+  const payloadText = `${WH_PREFIX}\n👤 **Gönderen:** ${username}\n❓ **Soru:** ${q}`;
+
   try {
-    // Discord Webhook'a gönder — bot dinleyip qa.json'a yazacak
     const res = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: WH_PREFIX + " " + q })
+      body: JSON.stringify({ content: payloadText })
     });
     if(!res.ok) throw new Error("webhook " + res.status);
     closeAsk();
-    toast("✅ Sorunuz iletildi! Birkaç saniye içinde görünür.");
-    // 3 sn sonra yenile (bot yazana kadar bekle)
+    toast("✅ Sorunuz iletildi! Ekip yanıtlayınca burada görünecek.");
     setTimeout(loadQA, 3000);
   } catch(e){
-    err.textContent = "Gönderilemedi. Webhook URL'yi kontrol edin.";
+    err.textContent = "Gönderilemedi. Webhook bağlantısını kontrol edin.";
   } finally {
     btn.disabled = false; btn.textContent = "GÖNDER →";
   }
 }
 
-// ─── SORU LİSTESİ ───
+// ─── SORU LİSTESİ (DISCORD/COMMUNITY STİLİ) ───
 async function loadQA(){
   try {
     const res = await fetch(QA_RAW_URL + "?t=" + Date.now());
@@ -465,25 +482,48 @@ async function loadQA(){
 function renderQA(list){
   const c = document.getElementById("qaList");
   if(!list.length){
-    c.innerHTML = '<div class="qa-empty">Henüz soru yok. İlk soran sen ol! 💬</div>';
+    c.innerHTML = '<div class="qa-empty">Henüz soru sorulmamış. İlk soruyu sen sor! 💬</div>';
     return;
   }
   c.innerHTML = list.map(q => {
-    const ans = q.answer
-      ? `<div class="qa-a"><div class="qa-a-tag">● CEVAP</div><div class="qa-a-text">${esc(q.answer)}</div></div>`
-      : `<div class="qa-pending"><div class="dot"></div><span>Cevap bekleniyor...</span></div>`;
+    const userName = q.user || q.author || "Kullanıcı";
+    const userInitial = userName.charAt(0).toUpperCase();
+    
+    const adminName = q.admin || q.answeredBy || "Wentra Destek";
+    const adminInitial = adminName.charAt(0).toUpperCase();
+
+    const answerBlock = q.answer
+      ? `<div style="margin-top:10px">
+           <div class="qa-user-info" style="margin-bottom:8px">
+             <div class="qa-avatar admin-avatar">${esc(adminInitial)}</div>
+             <div class="qa-user-details">
+               <div class="qa-username">${esc(adminName)} <span class="qa-badge-official">OFFICIAL</span></div>
+             </div>
+           </div>
+           <div class="qa-a-box">${esc(q.answer)}</div>
+         </div>`
+      : `<div style="margin-top:8px">
+           <div class="qa-pending-status"><div class="pulse-dot"></div> Yetkili yanıtı bekleniyor...</div>
+         </div>`;
+
     return `<div class="qa-card">
-      <div class="qa-q">
-        <div class="qa-q-tag">❓ SORU</div>
-        <div class="qa-q-text">${esc(q.question)}</div>
-        <div class="qa-meta">${q.time} UTC · #${q.id}</div>
-      </div>${ans}</div>`;
+      <div class="qa-card-header">
+        <div class="qa-user-info">
+          <div class="qa-avatar">${esc(userInitial)}</div>
+          <div class="qa-user-details">
+            <div class="qa-username">${esc(userName)}</div>
+            <div class="qa-timestamp">${q.time ? q.time + ' UTC' : ''}</div>
+          </div>
+        </div>
+      </div>
+      <div class="qa-q-box">${esc(q.question)}</div>
+      ${answerBlock}
+    </div>`;
   }).join("");
 }
 
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
-// Her 15 sn'de yenile
 setInterval(loadQA, 15000);
 
 // ─── GİRİŞ ───
