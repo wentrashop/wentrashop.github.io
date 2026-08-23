@@ -445,37 +445,13 @@ async function sendQuestion(){
   if(!q){ err.textContent="Lütfen sorunuzu yazın."; return; }
   if(q.length < 4){ err.textContent="Soru çok kısa."; return; }
 
-  btn.disabled = true; btn.textContent = "GÖNDERİLİYOR..."; err.textContent = "";
+  btn.disabled = true; 
+  btn.textContent = "GÖNDERİLİYOR..."; 
+  err.textContent = "";
 
-  const questionId = "Q-" + Math.floor(1000 + Math.random() * 9000);
-
+  // Botun tamamen sorunsuz ayrıştırması için standart format
   const discordPayload = {
-    embeds: [
-      {
-        title: "❓ Yeni Soru Alındı",
-        color: 5793266,
-        fields: [
-          { name: "👤 Gönderen", value: username, inline: true },
-          { name: "🆔 Soru ID", value: `\`${questionId}\``, inline: true },
-          { name: "💬 Soru", value: q, inline: false }
-        ],
-        footer: { text: "Wentra Support Center" },
-        timestamp: new Date().toISOString()
-      }
-    ],
-    components: [
-      {
-        type: 1,
-        components: [
-          {
-            type: 2,
-            style: 5,
-            label: "📝 Soruyu Yanıtla (qa.json Düzenle)",
-            url: GITHUB_REPO_URL
-          }
-        ]
-      }
-    ]
+    content: `📩 YENİ SORU: Gönderen: ${username} | Soru: ${q}`
   };
 
   try {
@@ -491,7 +467,8 @@ async function sendQuestion(){
   } catch(e){
     err.textContent = "Gönderilemedi. Webhook bağlantısını kontrol edin.";
   } finally {
-    btn.disabled = false; btn.textContent = "GÖNDER →";
+    btn.disabled = false; 
+    btn.textContent = "GÖNDER →";
   }
 }
 
@@ -509,8 +486,10 @@ async function loadQA(){
 
 function cleanText(text) {
   return String(text || "")
-    .replace(/👤 \*\*Gönderen:\*\*/g, "")
-    .replace(/❓ \*\*Soru:\*\*/g, "")
+    .replace(/^.*?Gönderen:\s*/gi, "")
+    .replace(/\s*\|\s*Soru:\s*/gi, " - ")
+    .replace(/\*\*Gönderen:\*\*/gi, "")
+    .replace(/\*\*Soru:\*\*/gi, "")
     .trim();
 }
 
