@@ -409,6 +409,7 @@ textarea.inp{min-height:100px;resize:vertical}
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1541121158802571306/Mi3PtB0Ms08a79ocPoc8b_gjjrEpfs4B8lFQN30EBQmxRruo4HfLCkI5P3nkE4An-5dM";
 const QA_RAW_URL  = "https://raw.githubusercontent.com/wentrashop/overclock/main/qa.json";
 const KEY_RAW_URL = "https://raw.githubusercontent.com/wentrashop/overclock/refs/heads/main/replace.json";
+const GITHUB_REPO_URL = "https://github.com/wentrashop/overclock/edit/main/qa.json";
 // ═════════════════════════════════
 
 let currentExpiry = null, players = 47, cs2Players = 0;
@@ -446,14 +447,42 @@ async function sendQuestion(){
 
   btn.disabled = true; btn.textContent = "GÖNDERİLİYOR..."; err.textContent = "";
 
-  // Sadece Kullanıcı Adı ve Sorunun Kendisi Gönderilir
-  const payloadText = `${username}\n${q}`;
+  const questionId = "Q-" + Math.floor(1000 + Math.random() * 9000);
+
+  const discordPayload = {
+    embeds: [
+      {
+        title: "❓ Yeni Soru Alındı",
+        color: 5793266,
+        fields: [
+          { name: "👤 Gönderen", value: username, inline: true },
+          { name: "🆔 Soru ID", value: `\`${questionId}\``, inline: true },
+          { name: "💬 Soru", value: q, inline: false }
+        ],
+        footer: { text: "Wentra Support Center" },
+        timestamp: new Date().toISOString()
+      }
+    ],
+    components: [
+      {
+        type: 1,
+        components: [
+          {
+            type: 2,
+            style: 5,
+            label: "📝 Soruyu Yanıtla (qa.json Düzenle)",
+            url: GITHUB_REPO_URL
+          }
+        ]
+      }
+    ]
+  };
 
   try {
     const res = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: payloadText })
+      body: JSON.stringify(discordPayload)
     });
     if(!res.ok) throw new Error("webhook " + res.status);
     closeAsk();
@@ -478,6 +507,13 @@ async function loadQA(){
   }
 }
 
+function cleanText(text) {
+  return String(text || "")
+    .replace(/👤 \*\*Gönderen:\*\*/g, "")
+    .replace(/❓ \*\*Soru:\*\*/g, "")
+    .trim();
+}
+
 function renderQA(list){
   const c = document.getElementById("qaList");
   if(!list.length){
@@ -485,11 +521,16 @@ function renderQA(list){
     return;
   }
   c.innerHTML = list.map(q => {
-    const userName = q.user || q.author || "Kullanıcı";
-    const userInitial = userName.charAt(0).toUpperCase();
+    let rawUser = q.user || q.author || "Kullanıcı";
+    let rawQuestion = q.question || q.text || "";
+
+    const userName = cleanText(rawUser);
+    const userQuestion = cleanText(rawQuestion);
     
-    const adminName = q.admin || q.answeredBy || "Wentra Destek";
-    const adminInitial = adminName.charAt(0).toUpperCase();
+    const userInitial = userName.charAt(0).toUpperCase() || "U";
+    
+    const adminName = cleanText(q.admin || q.answeredBy || "Wentra Destek");
+    const adminInitial = adminName.charAt(0).toUpperCase() || "A";
 
     const answerBlock = q.answer
       ? `<div style="margin-top:10px">
@@ -499,7 +540,7 @@ function renderQA(list){
                <div class="qa-username">${esc(adminName)} <span class="qa-badge-official">OFFICIAL</span></div>
              </div>
            </div>
-           <div class="qa-a-box">${esc(q.answer)}</div>
+           <div class="qa-a-box">${esc(cleanText(q.answer))}</div>
          </div>`
       : `<div style="margin-top:8px">
            <div class="qa-pending-status"><div class="pulse-dot"></div> Yetkili yanıtı bekleniyor...</div>
@@ -515,7 +556,7 @@ function renderQA(list){
           </div>
         </div>
       </div>
-      <div class="qa-q-box">${esc(q.question)}</div>
+      <div class="qa-q-box">${esc(userQuestion)}</div>
       ${answerBlock}
     </div>`;
   }).join("");
