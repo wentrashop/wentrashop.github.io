@@ -52,16 +52,6 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:17px;display
 @keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
 .loginbox h2{margin:0;font-size:20px}.loginbox p{font-size:10px;color:var(--muted);margin:7px 0 20px}.input{width:100%;background:#0b0d0f;border:1px solid #30363d;color:#fff;border-radius:5px;padding:13px;outline:0}.input:focus{border-color:#666d75}.error{height:18px;color:var(--red);font-size:9px;margin-top:8px}.submit{width:100%;margin-top:8px;background:#eee;color:#111;border:0;border-radius:5px;padding:12px;font-size:9px;font-weight:850;letter-spacing:1px}.cancel{width:100%;margin-top:8px;background:transparent;color:#777e86;border:1px solid var(--line);border-radius:5px;padding:10px;font-size:9px}
 
-/* Soru & Cevap */
-textarea.input{font-family:inherit;line-height:1.5}
-.qa-item{border:1px solid var(--line);background:#101215;border-radius:7px;padding:12px 14px;animation:cardIn .3s ease both}
-.qa-item .qa-name{font-size:8px;color:var(--dim);letter-spacing:1px;font-weight:800;text-transform:uppercase}
-.qa-item .qa-q{font-size:11px;color:#eee;margin:6px 0;line-height:1.5}
-.qa-item .qa-a{font-size:10px;color:var(--green);margin-top:8px;padding-top:8px;border-top:1px solid #23282e;line-height:1.5}
-.qa-item .qa-a b{color:var(--green)}
-.qa-pending{font-size:9px;color:var(--amber);margin-top:6px;font-weight:800;letter-spacing:.5px}
-.qa-empty{font-size:9px;color:var(--dim);padding:10px 2px}
-
 /* Separate authenticated page */
 .app{display:none;min-height:100vh;background:#090a0c}.app.show{display:block;animation:pageIn .45s ease}
 @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -109,7 +99,7 @@ textarea.input{font-family:inherit;line-height:1.5}
 <div id="landing">
 <header class="header">
  <div class="brand"><img src="https://i.ibb.co/Wvhw0dkk/logo.png" alt="Wentra"><div><b>WENTRA</b><small>CONTROL CENTER</small></div></div>
- <div class="header-right"><div class="system">● ALL SYSTEMS OPERATIONAL</div><button class="header-btn" onclick="openQA()">SORU &amp; CEVAP</button><button class="header-btn" onclick="openLogin()">GİRİŞ YAP</button></div>
+ <div class="header-right"><div class="system">● ALL SYSTEMS OPERATIONAL</div><button class="header-btn" onclick="openLogin()">GİRİŞ YAP</button></div>
 </header>
 
 <main class="container">
@@ -173,7 +163,7 @@ textarea.input{font-family:inherit;line-height:1.5}
        </div>
       </div>
 
-      <a href="https://github.com/nacarrk38888-tech/overclock/raw/refs/heads/main/wentra.exe" class="download-btn">⚡ WENTRA.EXE İNDİR</a>
+      <a href="https://github.com/wentrashop/overclock/raw/refs/heads/main/wentra.exe" class="download-btn">⚡ WENTRA.EXE İNDİR</a>
       <div class="expiry" id="expiryDate">Bitiş tarihi lisansa göre hesaplanıyor</div>
      </div>
     </div>
@@ -205,101 +195,15 @@ textarea.input{font-family:inherit;line-height:1.5}
   <button class="cancel" onclick="closeLogin()">VAZGEÇ</button>
  </div>
 </div>
-
-<!-- SORU & CEVAP -->
-<div id="qaOverlay" class="overlay">
- <div class="loginbox" style="width:520px;max-height:85vh;overflow:auto">
-  <h2>Soru &amp; Cevap</h2>
-  <p>Yazılımla ilgili sorunuzu iletin, ekibimiz Discord üzerinden cevaplayacak. Giriş yapmanıza gerek yok. Cevaplar aşağıda listelenir.</p>
-
-  <input id="qaName" class="input" type="text" autocomplete="off" placeholder="İsim / Rumuz (opsiyonel)" maxlength="50">
-  <textarea id="qaQuestion" class="input" style="margin-top:10px;min-height:90px;resize:vertical" maxlength="1000" placeholder="Sorunuzu yazın..."></textarea>
-  <div id="qaError" class="error"></div>
-  <button class="submit" id="qaSubmitBtn" onclick="submitQuestion()">SORUYU GÖNDER</button>
-
-  <hr style="border:0;border-top:1px solid var(--line);margin:22px 0 14px">
-
-  <div class="section-title" style="margin-bottom:12px"><b>SORULAN SORULAR &amp; CEVAPLAR</b><span class="live">● GÜNCEL</span></div>
-  <div id="qaList" style="display:flex;flex-direction:column;gap:10px"></div>
-
-  <button class="cancel" style="margin-top:16px" onclick="closeQA()">KAPAT</button>
- </div>
-</div>
-
 <div id="toast" class="toast"></div>
 
 <script>
-const GITHUB_JSON_URL = "https://raw.githubusercontent.com/nacarrk38888-tech/overclock/refs/heads/main/replace.json";
-
-// Botu yayına aldıktan sonra bu adresi kendi bot sunucunun HTTPS adresiyle değiştir (sonunda /api/ask olacak şekilde)
-const QA_API_URL  = "https://SENIN-BOT-ADRESIN.com/api/ask";
-const QA_JSON_URL = "https://raw.githubusercontent.com/nacarrk38888-tech/overclock/refs/heads/main/qa.json";
+const GITHUB_JSON_URL = "https://raw.githubusercontent.com/wentrashop/overclock/refs/heads/main/replace.json";
 
 let currentExpiry=null, players=47, cs2Players=0;
 
 function openLogin(){document.getElementById('overlay').classList.add('show');setTimeout(()=>document.getElementById('key').focus(),60)}
 function closeLogin(){document.getElementById('overlay').classList.remove('show');document.getElementById('error').textContent=''}
-
-function openQA(){document.getElementById('qaOverlay').classList.add('show');loadQuestions()}
-function closeQA(){document.getElementById('qaOverlay').classList.remove('show');document.getElementById('qaError').textContent=''}
-
-function escapeHtml(str){
- const d=document.createElement('div');
- d.textContent=str==null?'':String(str);
- return d.innerHTML;
-}
-
-async function loadQuestions(){
- const list=document.getElementById('qaList');
- list.innerHTML='<div class="qa-empty">Yükleniyor...</div>';
- try{
-    const res=await fetch(QA_JSON_URL+'?t='+Date.now());
-    if(!res.ok) throw new Error('fetch-fail');
-    const data=await res.json();
-    if(!Array.isArray(data)||data.length===0){
-       list.innerHTML='<div class="qa-empty">Henüz soru yok. İlk soruyu sen sor!</div>';
-       return;
-    }
-    list.innerHTML=data.slice().reverse().map(item=>{
-       const name=escapeHtml(item.name||'Anonim');
-       const q=escapeHtml(item.question||'');
-       if(item.status==='answered'&&item.answer){
-          return '<div class="qa-item"><div class="qa-name">'+name+'</div><div class="qa-q">'+q+'</div><div class="qa-a"><b>Cevap:</b> '+escapeHtml(item.answer)+'</div></div>';
-       }
-       return '<div class="qa-item"><div class="qa-name">'+name+'</div><div class="qa-q">'+q+'</div><div class="qa-pending">⏳ Cevap bekleniyor...</div></div>';
-    }).join('');
- }catch(e){
-    list.innerHTML='<div class="qa-empty" style="color:var(--red)">Sorular yüklenemedi, lütfen tekrar deneyin.</div>';
-    console.error('QA yükleme hatası:',e);
- }
-}
-
-async function submitQuestion(){
- const nameEl=document.getElementById('qaName'), qEl=document.getElementById('qaQuestion');
- const errorEl=document.getElementById('qaError'), btn=document.getElementById('qaSubmitBtn');
- const name=nameEl.value.trim(), question=qEl.value.trim();
-
- if(!question){errorEl.textContent='Lütfen sorunuzu yazın.';return}
-
- btn.textContent='GÖNDERİLİYOR...';btn.disabled=true;errorEl.textContent='';
-
- try{
-    const res=await fetch(QA_API_URL,{
-       method:'POST',
-       headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({name,question})
-    });
-    if(!res.ok) throw new Error('server-fail');
-    qEl.value='';nameEl.value='';
-    toast('Sorunuz iletildi! Cevap geldiğinde bu listede görünecek.');
-    loadQuestions();
- }catch(e){
-    errorEl.textContent='Soru gönderilemedi. Lütfen daha sonra tekrar deneyin.';
-    console.error('QA gönderme hatası:',e);
- }finally{
-    btn.textContent='SORUYU GÖNDER';btn.disabled=false;
- }
-}
 
 async function login(){
  const raw=document.getElementById('key').value.trim();
@@ -430,9 +334,7 @@ function updatePlayers(){
 
 document.getElementById('key').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeLogin()});
-document.getElementById('qaOverlay').addEventListener('click',e=>{if(e.target.id==='qaOverlay')closeQA()});
 clock();setInterval(clock,1000);setInterval(updatePlayers,3500);setInterval(updateLicenseTimer,1000);
-setInterval(()=>{if(document.getElementById('qaOverlay').classList.contains('show'))loadQuestions()},8000);
 </script>
 </body>
 </html>
