@@ -85,7 +85,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;
 footer{margin-top:40px;border-top:1px solid var(--line);padding-top:17px;
  display:flex;justify-content:space-between;color:#4f565e;font-size:8px;letter-spacing:1.4px}
 
-/* ── PREMİUM S&C COMMUNITY PANEL ── */
+/* ── S&C COMMUNITY PANEL ── */
 .qa-wrap{margin-top:48px}
 .qa-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .qa-top-left h2{font-size:24px;margin:0 0 6px;letter-spacing:-.5px;display:flex;align-items:center;gap:10px}
@@ -409,8 +409,6 @@ textarea.inp{min-height:100px;resize:vertical}
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1541121158802571306/Mi3PtB0Ms08a79ocPoc8b_gjjrEpfs4B8lFQN30EBQmxRruo4HfLCkI5P3nkE4An-5dM";
 const QA_RAW_URL  = "https://raw.githubusercontent.com/wentrashop/overclock/main/qa.json";
 const KEY_RAW_URL = "https://raw.githubusercontent.com/wentrashop/overclock/refs/heads/main/replace.json";
-
-const WH_PREFIX   = "📩 YENİ SORU:"; 
 // ═════════════════════════════════
 
 let currentExpiry = null, players = 47, cs2Players = 0;
@@ -448,7 +446,8 @@ async function sendQuestion(){
 
   btn.disabled = true; btn.textContent = "GÖNDERİLİYOR..."; err.textContent = "";
 
-  const payloadText = `${WH_PREFIX}\n👤 **Gönderen:** ${username}\n❓ **Soru:** ${q}`;
+  // Sadece Kullanıcı Adı ve Sorunun Kendisi Gönderilir
+  const payloadText = `${username}\n${q}`;
 
   try {
     const res = await fetch(WEBHOOK_URL, {
@@ -467,7 +466,7 @@ async function sendQuestion(){
   }
 }
 
-// ─── SORU LİSTESİ (DISCORD/COMMUNITY STİLİ) ───
+// ─── SORU LİSTESİ ───
 async function loadQA(){
   try {
     const res = await fetch(QA_RAW_URL + "?t=" + Date.now());
