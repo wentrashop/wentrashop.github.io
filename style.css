@@ -1,0 +1,578 @@
+:root {
+    --accent-color: #dc2626;
+    --accent-gradient: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+    --accent-dark: #7f1d1d;
+    --accent-darker: #450a0a;
+    --accent-border: #b91c1c;
+    --accent-glow: rgba(220, 38, 38, 0.6);
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+html, body {
+    width: 1920px;
+    height: 1080px;
+    background: transparent;
+    overflow: hidden;
+}
+
+.dui-viewport {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+}
+
+/* ============================================================
+   1. FULLSCREEN SEMI-TRANSPARENT PRO LOADING OVERLAY
+   ============================================================ */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background: rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.loading-box {
+    width: 380px;
+    background: rgba(14, 14, 18, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    padding: 22px 26px;
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-gradient);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.loading-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.loading-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-gradient);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.loading-brand-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.injected-badge {
+    background: rgba(22, 163, 74, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #4ade80;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.check-icon {
+    color: #22c55e;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-gradient);
+    box-shadow: 0 0 10px var(--accent-glow);
+    transition: width 0.08s linear;
+}
+
+.loading-status-text {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+}
+
+/* ============================================================
+   2. CHOOSE MENU KEY MODAL
+   ============================================================ */
+.key-select-modal {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: 460px;
+    background: rgba(12, 12, 14, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+    padding: 12px 16px;
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease-out;
+}
+
+.key-select-modal.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.key-select-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.mini-logo {
+    width: 18px;
+    height: 18px;
+    background: var(--accent-border);
+    color: #fff;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.key-select-input {
+    background: rgba(5, 5, 6, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid var(--accent-color);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 12px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+    border-radius: 2px;
+}
+
+.key-select-hint {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   3. NOCLIP DUI TOP HUD
+   ============================================================ */
+.noclip-hud {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    min-width: 440px;
+    height: 48px;
+    background: rgba(14, 14, 18, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 500;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.noclip-hud.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.hud-accent-bar {
+    width: 4px;
+    height: 24px;
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
+    margin-right: 12px;
+    border-radius: 2px;
+}
+
+.noclip-hud-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.noclip-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.noclip-info {
+    color: #a1a1aa;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   4. ERP DUI OVERLAY HUD
+   ============================================================ */
+.erp-hud {
+    position: absolute;
+    top: 120px;
+    left: 60px;
+    width: 150px;
+    background: rgba(14, 14, 18, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid #10b981;
+    border-radius: 4px;
+    padding: 10px 14px;
+    z-index: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.erp-hud.active {
+    opacity: 1;
+}
+
+.erp-accent-indicator {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.erp-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.erp-status-title {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.erp-target-text {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.erp-key-hint {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   5. FLEXY MAIN MENU (WENTRA REDESIGN)
+   ============================================================ */
+.wentra-menu {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    width: 340px;
+    height: 620px;
+    background: rgba(18, 18, 20, 0.96);
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    transform: scale(0.96);
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+}
+
+.wentra-menu.open {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+/* LEFT ACCENT RED LINE */
+.left-accent-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--accent-gradient);
+    box-shadow: 2px 0 10px var(--accent-glow);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* HEADER BANNER */
+.menu-header {
+    height: 140px;
+    background: radial-gradient(circle at center, var(--accent-dark) 0%, var(--accent-darker) 65%, #180505 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 2px solid var(--accent-border);
+    transition: all 0.3s ease;
+}
+
+.smoke-bg {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, var(--accent-dark) 15%, transparent 75%);
+    animation: rotateSmoke 14s infinite linear;
+}
+
+@keyframes rotateSmoke {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.75) 100%);
+    pointer-events: none;
+}
+
+.brand-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -1.5px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.4);
+    z-index: 2;
+    transform: scaleY(1.05);
+    text-transform: uppercase;
+}
+
+/* SUBHEADER / BAR */
+.menu-subheader {
+    height: 34px;
+    background: #09090b;
+    padding: 0 14px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.category-name {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease;
+}
+
+.menu-counter {
+    color: #a1a1aa;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* LIST ITEMS */
+.menu-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.menu-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+    background: var(--accent-border);
+}
+
+.menu-item {
+    height: 40px;
+    padding: 0 16px 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #d4d4d8;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(24, 24, 27, 0.6);
+}
+
+.menu-item:hover, .menu-item.selected {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    font-weight: 700;
+    padding-left: 26px;
+    box-shadow: inset 3px 0 0 #ffffff;
+}
+
+.item-arrow {
+    font-size: 14px;
+    color: #a1a1aa;
+    font-weight: 700;
+}
+
+.menu-item.selected .item-arrow {
+    color: #ffffff;
+}
+
+/* PILL TOGGLE SWITCH WITH WHITE KNOB */
+.toggle-switch {
+    width: 36px;
+    height: 18px;
+    border-radius: 9px;
+    background: #27272a;
+    position: relative;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.toggle-switch.on {
+    background: var(--accent-color);
+    border-color: var(--accent-border);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.toggle-knob {
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.toggle-switch.on .toggle-knob {
+    transform: translateX(18px);
+}
+
+/* FOOTER */
+.menu-footer {
+    height: 32px;
+    background: #000000;
+    padding: 0 14px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #71717a;
+    font-weight: 600;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-left {
+    color: #a1a1aa;
+    letter-spacing: 0.5px;
+}
+
+.footer-logo {
+    width: 18px;
+    height: 18px;
+    background: var(--accent-border);
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+.footer-right {
+    color: #71717a;
+}

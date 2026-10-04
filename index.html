@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLEXY LUA ENGINE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="dui-viewport">
+
+    <!-- FULLSCREEN SEMI-TRANSPARENT PRO LOADING OVERLAY -->
+    <div class="loading-overlay active" id="loadingOverlay">
+        <div class="loading-box">
+            <div class="loading-header-row">
+                <div class="loading-title-group">
+                    <div class="brand-logo-icon">F</div>
+                    <h1 class="loading-brand-title">FLEXY</h1>
+                </div>
+                <div class="injected-badge">
+                    <span class="check-icon">✓</span> Injected
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="loading-status-text" id="loadingStatus">Loading Addon Vehicles...</div>
+        </div>
+    </div>
+
+    <!-- CHOOSE MENU KEY MODAL (BOTTOM CENTER) -->
+    <div class="key-select-modal" id="keySelectModal">
+        <div class="key-select-header">
+            <div class="mini-logo">F</div>
+            <span>Choose Menu Key</span>
+        </div>
+        <div class="key-select-input" id="candidateKeyDisplay">INSERT</div>
+        <div class="key-select-hint">Press any key to choose, then press [ENTER] to confirm</div>
+    </div>
+
+    <!-- NOCLIP TOP HUD OVERLAY -->
+    <div class="noclip-hud" id="noclipHud">
+        <div class="hud-accent-bar"></div>
+        <div class="noclip-hud-content">
+            <div class="noclip-title">FLEXY NOCLIP</div>
+            <div class="noclip-info" id="noclipSpeedText">Speed: 1.0x | WASD: Move | Shift: Boost | Space/Ctrl: Elevate</div>
+        </div>
+    </div>
+
+    <!-- ERP HUD OVERLAY -->
+    <div class="erp-hud" id="erpHud">
+        <div class="erp-accent-indicator" id="erpIndicator"></div>
+        <div class="erp-details">
+            <div class="erp-status-title" id="erpTitle">ERP BOSTU</div>
+            <div class="erp-target-text" id="erpTarget">Bekleniyor</div>
+            <div class="erp-key-hint">[H] Attach / Detach</div>
+        </div>
+    </div>
+
+    <!-- MAIN FLEXY MENU CONTAINER -->
+    <div class="wentra-menu" id="menu">
+        <div class="left-accent-line"></div>
+        <div class="menu-header">
+            <div class="smoke-bg"></div>
+            <div class="header-overlay"></div>
+            <h1 class="brand-title">FLEXY</h1>
+        </div>
+        <div class="menu-subheader">
+            <span class="category-name" id="currentCategoryTitle">Main Menu</span>
+            <span class="menu-counter" id="itemCounter">1 / 5</span>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+        <div class="menu-footer">
+            <span class="footer-left">flexy.shop</span>
+            <div class="footer-logo">F</div>
+            <span class="footer-right" id="footerVer">v16.1 Premium</span>
+        </div>
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
