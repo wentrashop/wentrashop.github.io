@@ -195,6 +195,31 @@ window.addEventListener('message', (event) => {
         } else {
             erpHud.classList.remove('active');
         }
+    } else if (data.action === 'updateWatermark' || data.action === 'setWatermark') {
+        const wmEl = document.getElementById('flexyWatermark');
+        if (wmEl) {
+            if (data.visible === false || data.active === false) {
+                wmEl.classList.remove('active');
+            } else {
+                wmEl.classList.add('active');
+            }
+        }
+        if (data.title) {
+            const el = document.getElementById('wmTitle');
+            if (el) el.innerText = data.title;
+        }
+        if (data.version) {
+            const el = document.getElementById('wmVersion');
+            if (el) el.innerText = data.version;
+        }
+        if (data.build) {
+            const el = document.getElementById('wmBuild');
+            if (el) el.innerText = data.build;
+        }
+        if (data.time) {
+            const el = document.getElementById('wmTime');
+            if (el) el.innerText = data.time;
+        }
     } else if (data.action === 'setTheme') {
         applyTheme(data.theme);
     } else if (data.action === 'setHeaderTitle') {
