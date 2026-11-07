@@ -134,7 +134,7 @@ function renderMenu() {
 
         let rightBadge = '';
         if (opt.type === 'submenu' || opt.type === 'submenu_dynamic' || opt.type === 'target_player_submenu' || opt.type === 'target_vehicle_submenu') {
-            rightBadge = `<span class="item-arrow">›</span>`;
+            rightBadge = `<span class="item-arrow">\u276F</span>`;
         } else if (opt.type === 'toggle') {
             rightBadge = `
                 <div class="toggle-switch ${opt.active ? 'on' : 'off'}">
@@ -149,13 +149,13 @@ function renderMenu() {
             const lbl = (opt.valueLabels && opt.valueLabels[val - min]) ? opt.valueLabels[val - min] : val;
             rightBadge = `
                 <div class="slider-wrap">
-                    <span class="slider-hint">â—€</span>
+                    <span class="slider-hint">\u25C4</span>
                     <div class="slider-track">
                         <div class="slider-fill" style="width:${pct}%"></div>
                         <div class="slider-thumb" style="left:${pct}%"></div>
                     </div>
-                    <span class="slider-hint">â–¶</span>
-                    <span class="slider-value">${lbl}</span>
+                    <span class="slider-hint">\u25BA</span>
+                    <span class="slider-value"">${lbl}</span>
                 </div>
             `;
         } else {
@@ -179,10 +179,10 @@ function renderMenu() {
 // FLEXY NOTIFICATION TOAST ENGINE
 // Accepts: { action: "notify", message: "...", title: "FLEXY", type: "success|error|warn|info", duration: 4 }
 const NOTIF_ICONS = {
-    success: 'âœ“',
-    error:   'âœ•',
-    warn:    'âš ',
-    info:    'â—ˆ'
+    success: '\u2713',
+    error:   '\u2715',
+    warn:    '\u26A0',
+    info:    '\u25C8'
 };
 
 let notifQueue = [];
@@ -208,7 +208,7 @@ function showNotification({ message = '', title = 'FLEXY', type = 'info', durati
         <div class="notif-stripe"></div>
         <div class="notif-body">
             <div class="notif-header">
-                <span class="notif-icon">${NOTIF_ICONS[type] || 'â—ˆ'}</span>
+                <span class="notif-icon">${NOTIF_ICONS[type] || '\u25C8'}</span>
                 <span class="notif-title">${title}</span>
             </div>
             <div class="notif-message">${message}</div>
