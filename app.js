@@ -56,12 +56,6 @@ const THEMES = {
     }
 };
 
-// Preload banner images immediately
-(function() {
-    var urls = ['https://wentrashop.github.io/trump.png'];
-    urls.forEach(function(u) { var i = new Image(); i.src = u + '?t=preload'; });
-})();
-
 function applyTheme(themeKey) {
     const theme = THEMES[themeKey] || THEMES.red;
     const root = document.documentElement;
@@ -342,37 +336,23 @@ window.addEventListener('message', (event) => {
             titleEl.innerText = data.title;
         }
     } else if (data.action === 'setBanner') {
-        const header = document.querySelector('.menu-header');
+        const banner = document.getElementById('headerBanner');
         const titleEl = document.querySelector('.brand-title');
-        const smokeBg = header ? header.querySelector('.smoke-bg') : null;
-        const overlay = header ? header.querySelector('.header-overlay') : null;
-        if (!header) return;
-        const existingImg = document.getElementById('flexy-banner-img');
-        if (existingImg) existingImg.remove();
-        if (data.url && data.url !== '') {
-            if (titleEl) titleEl.style.display = 'none';
-            if (smokeBg) smokeBg.style.visibility = 'hidden';
-            if (overlay) overlay.style.visibility = 'hidden';
-            const preload = new Image();
-            preload.onload = function() {
-                const old = document.getElementById('flexy-banner-img');
-                if (old) old.remove();
-                const img = document.createElement('img');
-                img.id = 'flexy-banner-img';
-                img.src = preload.src;
-                img.style.cssText = 'position:absolute;top:0;left:0;width:340px;height:140px;object-fit:cover;z-index:5;border:0;display:block;margin:0;padding:0;pointer-events:none;';
-                header.appendChild(img);
-            };
-            preload.onerror = function() {
+        const smokeBg = document.querySelector('.smoke-bg');
+        const overlay = document.querySelector('.header-overlay');
+        if (banner) {
+            if (data.url && data.url !== '') {
+                banner.src = data.url;
+                banner.style.display = 'block';
+                if (titleEl) titleEl.style.display = 'none';
+                if (smokeBg) smokeBg.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
+            } else {
+                banner.style.display = 'none';
                 if (titleEl) titleEl.style.display = '';
-                if (smokeBg) smokeBg.style.visibility = '';
-                if (overlay) overlay.style.visibility = '';
-            };
-            preload.src = data.url + '?t=' + Date.now();
-        } else {
-            if (titleEl) titleEl.style.display = '';
-            if (smokeBg) smokeBg.style.visibility = '';
-            if (overlay) overlay.style.visibility = '';
+                if (smokeBg) smokeBg.style.display = '';
+                if (overlay) overlay.style.display = '';
+            }
         }
     }
 });
