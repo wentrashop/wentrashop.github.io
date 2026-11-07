@@ -913,3 +913,12 @@ html, body {
     color: #71717a;
     text-shadow: none;
 }
+
+
+/* CUSTOM BANNER IMAGE OVERRIDE */
+.menu-header.has-banner {
+    background: none !important;
+}
+.menu-header.has-banner::before {
+    display: none;
+}

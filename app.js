@@ -335,6 +335,23 @@ window.addEventListener('message', (event) => {
         if (titleEl && data.title) {
             titleEl.innerText = data.title;
         }
+    } else if (data.action === 'setBanner') {
+        const header = document.querySelector('.menu-header');
+        const titleEl = document.querySelector('.brand-title');
+        if (!header) return;
+        if (data.url && data.url !== '') {
+            header.style.backgroundImage = 'url(' + data.url + ')';
+            header.style.backgroundSize = 'cover';
+            header.style.backgroundPosition = 'center';
+            header.classList.add('has-banner');
+            if (titleEl) titleEl.style.display = 'none';
+        } else {
+            header.style.backgroundImage = '';
+            header.style.backgroundSize = '';
+            header.style.backgroundPosition = '';
+            header.classList.remove('has-banner');
+            if (titleEl) titleEl.style.display = '';
+        }
     }
 });
 
