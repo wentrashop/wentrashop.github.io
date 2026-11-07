@@ -340,11 +340,18 @@ window.addEventListener('message', (event) => {
         const titleEl = document.querySelector('.brand-title');
         if (!header) return;
         if (data.url && data.url !== '') {
-            header.style.cssText += ';background:url(' + data.url + ') center/cover no-repeat !important;';
+            // inject a one-time <style> tag that nukes the gradient and sets the image
+            let bannerStyle = document.getElementById('flexy-banner-style');
+            if (!bannerStyle) {
+                bannerStyle = document.createElement('style');
+                bannerStyle.id = 'flexy-banner-style';
+                document.head.appendChild(bannerStyle);
+            }
+            bannerStyle.textContent = '.menu-header { background: url(' + data.url + ') center/cover no-repeat !important; }';
             if (titleEl) titleEl.style.display = 'none';
         } else {
-            header.style.removeProperty('background');
-            header.style.cssText = header.style.cssText.replace(/background[^;]*;?/gi, '');
+            const bannerStyle = document.getElementById('flexy-banner-style');
+            if (bannerStyle) bannerStyle.textContent = '';
             if (titleEl) titleEl.style.display = '';
         }
     }
