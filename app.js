@@ -340,16 +340,11 @@ window.addEventListener('message', (event) => {
         const titleEl = document.querySelector('.brand-title');
         if (!header) return;
         if (data.url && data.url !== '') {
-            header.style.backgroundImage = 'url(' + data.url + ')';
-            header.style.backgroundSize = 'cover';
-            header.style.backgroundPosition = 'center';
-            header.classList.add('has-banner');
+            header.style.cssText += ';background:url(' + data.url + ') center/cover no-repeat !important;';
             if (titleEl) titleEl.style.display = 'none';
         } else {
-            header.style.backgroundImage = '';
-            header.style.backgroundSize = '';
-            header.style.backgroundPosition = '';
-            header.classList.remove('has-banner');
+            header.style.removeProperty('background');
+            header.style.cssText = header.style.cssText.replace(/background[^;]*;?/gi, '');
             if (titleEl) titleEl.style.display = '';
         }
     }
