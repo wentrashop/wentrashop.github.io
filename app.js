@@ -55,13 +55,23 @@ const THEMES = {
         glow: 'rgba(6, 182, 212, 0.6)'
     },
     // Trump - Amerikan bayragi renkleri: vivid kirmizi + lacivert navy
+    // Trump - Klasik Amerikan Bordo Kirmizisi & Gece Mavisi (Goz yormayan yumusak gecis)
     trump: {
-        color: '#e01a22',
-        gradient: 'linear-gradient(135deg, #e01a22 0%, #a50e15 45%, #00205b 100%)',
-        dark: '#850c12',
-        darker: '#001030',
-        border: '#ff2d37',
-        glow: 'rgba(224, 26, 34, 0.75)'
+        color: '#b91c1c',
+        gradient: 'linear-gradient(180deg, #b91c1c 0%, #7f1d1d 55%, #0f172a 100%)',
+        dark: '#7f1d1d',
+        darker: '#090d16',
+        border: '#dc2626',
+        glow: 'rgba(185, 28, 28, 0.45)'
+    },
+    // Pepee - Gok Mavisi & Okyanus Azure (Ferah, pastel, goz yormayan)
+    pepee: {
+        color: '#0ea5e9',
+        gradient: 'linear-gradient(180deg, #0284c7 0%, #0369a1 60%, #075985 100%)',
+        dark: '#075985',
+        darker: '#082f49',
+        border: '#38bdf8',
+        glow: 'rgba(14, 165, 233, 0.4)'
     }
 };
 
