@@ -338,9 +338,15 @@ window.addEventListener('message', (event) => {
     } else if (data.action === 'setBanner') {
         const header = document.querySelector('.menu-header');
         const titleEl = document.querySelector('.brand-title');
+        const smokeBg = document.querySelector('.smoke-bg');
+        const headerOverlay = document.querySelector('.header-overlay');
         if (!header) return;
         if (data.url && data.url !== '') {
-            // inject a one-time <style> tag that nukes the gradient and sets the image
+            // Hide overlays that sit on top of background image
+            if (smokeBg) smokeBg.style.display = 'none';
+            if (headerOverlay) headerOverlay.style.display = 'none';
+            if (titleEl) titleEl.style.display = 'none';
+            // Inject style tag to override background with !important
             let bannerStyle = document.getElementById('flexy-banner-style');
             if (!bannerStyle) {
                 bannerStyle = document.createElement('style');
@@ -348,11 +354,13 @@ window.addEventListener('message', (event) => {
                 document.head.appendChild(bannerStyle);
             }
             bannerStyle.textContent = '.menu-header { background: url(' + data.url + ') center/cover no-repeat !important; }';
-            if (titleEl) titleEl.style.display = 'none';
         } else {
+            // Restore everything
+            if (smokeBg) smokeBg.style.display = '';
+            if (headerOverlay) headerOverlay.style.display = '';
+            if (titleEl) titleEl.style.display = '';
             const bannerStyle = document.getElementById('flexy-banner-style');
             if (bannerStyle) bannerStyle.textContent = '';
-            if (titleEl) titleEl.style.display = '';
         }
     }
 });
