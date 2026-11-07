@@ -1,4 +1,4 @@
-﻿// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
+// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
 let currentMenuState = {
     title: "Main Menu",
     counterText: "1 / 5",
@@ -134,7 +134,7 @@ function renderMenu() {
 
         let rightBadge = '';
         if (opt.type === 'submenu' || opt.type === 'submenu_dynamic' || opt.type === 'target_player_submenu' || opt.type === 'target_vehicle_submenu') {
-            rightBadge = `<span class="item-arrow">â¯</span>`;
+            rightBadge = `<span class="item-arrow">›</span>`;
         } else if (opt.type === 'toggle') {
             rightBadge = `
                 <div class="toggle-switch ${opt.active ? 'on' : 'off'}">
@@ -159,7 +159,7 @@ function renderMenu() {
                 </div>
             `;
         } else {
-            rightBadge = `<span class="item-arrow">â¯</span>`;
+            rightBadge = ``;
         }
 
         // Keep original span structure â€” no extra class on the label
