@@ -163,9 +163,9 @@ html, body {
    ============================================================ */
 .key-select-modal {
     position: absolute;
-    bottom: 50px;
+    top: 40px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(-20px);
     width: 460px;
     background: rgba(12, 12, 14, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -590,15 +590,21 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 3px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.65);
-    display: none;
+    /* FIX: use opacity instead of display:none so the DUI texture is
+       always composited correctly. display:none causes a black-flash on
+       the first frame the texture is sampled by DrawSprite. */
+    display: flex;
     align-items: center;
     z-index: 900;
     overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .flexy-watermark.active {
-    display: flex;
+    opacity: 1;
+    pointer-events: none;
 }
 
 .watermark-accent-bar {
@@ -649,4 +655,276 @@ html, body {
 .watermark-time {
     color: #d4d4d8;
     font-weight: 600;
+}
+
+
+/* ============================================================
+   7. FLEXY NOTIFICATION TOAST SYSTEM (BOTTOM-RIGHT)
+   ============================================================ */
+
+.flexy-notif-container {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    width: 360px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.flexy-notif {
+    width: 100%;
+    background: rgba(10, 10, 13, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 5px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.85),
+        0 2px 8px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    position: relative;
+
+    /* Slide in from right */
+    transform: translateX(calc(100% + 40px));
+    opacity: 0;
+    transition:
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.28s ease;
+}
+
+.flexy-notif.notif-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.flexy-notif.notif-hide {
+    transform: translateX(calc(100% + 40px));
+    opacity: 0;
+    transition:
+        transform 0.3s cubic-bezier(0.55, 0, 1, 0.45),
+        opacity 0.2s ease;
+}
+
+/* Left accent stripe */
+.notif-stripe {
+    width: 4px;
+    flex-shrink: 0;
+    background: var(--accent-gradient);
+    box-shadow: 2px 0 12px var(--accent-glow);
+    position: relative;
+}
+
+/* Animated progress drain bar inside the stripe */
+.notif-stripe::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    transform-origin: bottom;
+    transform: scaleY(0);
+    animation: notifDrain var(--notif-duration, 4s) linear forwards;
+}
+
+@keyframes notifDrain {
+    0%   { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
+}
+
+/* Body */
+.notif-body {
+    flex: 1;
+    padding: 11px 14px 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.notif-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.notif-icon {
+    font-size: 11px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* TYPE-specific icon colors */
+.flexy-notif.notif-success .notif-icon { color: #4ade80; }
+.flexy-notif.notif-error   .notif-icon { color: #f87171; }
+.flexy-notif.notif-warn    .notif-icon { color: #fbbf24; }
+.flexy-notif.notif-info    .notif-icon { color: var(--accent-color); }
+
+/* TYPE-specific stripe colors */
+.flexy-notif.notif-success .notif-stripe {
+    background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+    box-shadow: 2px 0 10px rgba(34, 197, 94, 0.5);
+}
+.flexy-notif.notif-error .notif-stripe {
+    background: linear-gradient(180deg, #ef4444 0%, #991b1b 100%);
+    box-shadow: 2px 0 10px rgba(239, 68, 68, 0.5);
+}
+.flexy-notif.notif-warn .notif-stripe {
+    background: linear-gradient(180deg, #f59e0b 0%, #92400e 100%);
+    box-shadow: 2px 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.notif-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notif-message {
+    font-size: 12px;
+    font-weight: 500;
+    color: #a1a1aa;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+/* Subtle shimmer sweep on appear */
+.flexy-notif::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+    animation: notifShimmer 0.7s ease 0.2s forwards;
+    pointer-events: none;
+}
+
+@keyframes notifShimmer {
+    0%   { left: -60%; }
+    100% { left: 130%; }
+}
+
+
+/* ============================================================
+   8. SLIDER MENU ITEM
+   ============================================================ */
+
+/* Slider item — taller to fit the track */
+.menu-item.item-type-slider {
+    height: 46px;
+    padding: 0 16px 0 22px;
+}
+
+/* When selected: keep same layout but highlighted bg */
+.menu-item.item-type-slider.selected {
+    padding-left: 26px;
+}
+
+/* Label inside slider item only — clamp so slider-wrap never overflows */
+.menu-item.item-type-slider > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+/* Slider right-side wrapper */
+.slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.slider-hint {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.3);
+    line-height: 1;
+    transition: color 0.15s ease;
+}
+
+.menu-item.selected .slider-hint {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Track */
+.slider-track {
+    width: 100px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+}
+
+/* Filled portion */
+.slider-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 3px;
+    box-shadow: 0 0 8px var(--accent-glow);
+    transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* Thumb dot */
+.slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        0 0 0 2px var(--accent-color),
+        0 0 10px var(--accent-glow),
+        0 2px 4px rgba(0,0,0,0.6);
+    transition: left 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* When NOT selected: dim the thumb */
+.menu-item:not(.selected) .slider-thumb {
+    background: #aaaaaa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.menu-item:not(.selected) .slider-fill {
+    background: rgba(255,255,255,0.18);
+    box-shadow: none;
+}
+
+/* Value label */
+.slider-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-color);
+    min-width: 50px;
+    text-align: right;
+    white-space: nowrap;
+    text-shadow: 0 0 8px var(--accent-glow);
+    transition: color 0.2s ease;
+}
+
+.menu-item:not(.selected) .slider-value {
+    color: #71717a;
+    text-shadow: none;
 }

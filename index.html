@@ -12,12 +12,15 @@
 <div class="dui-viewport">
 
     <!-- TOP-LEFT FLEXY WATERMARK (SCREENSHOT REPLICA) -->
-    <div class="flexy-watermark active" id="flexyWatermark">
+    <!-- FIX: removed "active" from initial class — Lua sends updateWatermark after
+         DUI is confirmed ready. Starting with active caused a black-flash on the
+         very first DrawSprite sample before the page was fully painted. -->
+    <div class="flexy-watermark" id="flexyWatermark">
         <div class="watermark-accent-bar"></div>
         <div class="watermark-content">
             <span class="watermark-brand" id="wmTitle">FLEXY</span>
             <span class="watermark-sep">|</span>
-            <span class="watermark-ver" id="wmVersion">v16.2</span>
+            <span class="watermark-ver" id="wmVersion">v3</span>
             <span class="watermark-sep">|</span>
             <span class="watermark-build" id="wmBuild">31718</span>
             <span class="watermark-sep">|</span>
@@ -26,7 +29,10 @@
     </div>
 
     <!-- FULLSCREEN SEMI-TRANSPARENT PRO LOADING OVERLAY -->
-    <div class="loading-overlay active" id="loadingOverlay">
+    <!-- FIX: removed "active" from initial class — driven entirely by Lua postMessage.
+         Starting active caused the overlay to flash on-screen for one frame on
+         page load before the CSS opacity transition could hide it. -->
+    <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-box">
             <div class="loading-header-row">
                 <div class="loading-title-group">
@@ -73,6 +79,9 @@
         </div>
     </div>
 
+    <!-- FLEXY NOTIFICATION TOAST CONTAINER (bottom-right) -->
+    <div class="flexy-notif-container" id="flexyNotifContainer"></div>
+
     <!-- MAIN FLEXY MENU CONTAINER -->
     <div class="wentra-menu" id="menu">
         <div class="left-accent-line"></div>
@@ -89,7 +98,7 @@
         <div class="menu-footer">
             <span class="footer-left">flexy.shop</span>
             <div class="footer-logo">F</div>
-            <span class="footer-right" id="footerVer">v16.1 Premium</span>
+            <span class="footer-right" id="footerVer">v3 Premium</span>
         </div>
     </div>
 
