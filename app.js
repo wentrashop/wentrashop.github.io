@@ -342,7 +342,7 @@ window.addEventListener('message', (event) => {
         const overlay = document.querySelector('.header-overlay');
         if (banner) {
             if (data.url && data.url !== '') {
-                banner.src = data.url;
+                banner.src = data.url + '?t=' + Date.now();
                 banner.style.display = 'block';
                 if (titleEl) titleEl.style.display = 'none';
                 if (smokeBg) smokeBg.style.display = 'none';
