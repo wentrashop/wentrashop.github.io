@@ -338,29 +338,24 @@ window.addEventListener('message', (event) => {
     } else if (data.action === 'setBanner') {
         const header = document.querySelector('.menu-header');
         const titleEl = document.querySelector('.brand-title');
-        const smokeBg = document.querySelector('.smoke-bg');
-        const headerOverlay = document.querySelector('.header-overlay');
         if (!header) return;
+        // Remove any existing banner img
+        const existingImg = document.getElementById('flexy-banner-img');
+        if (existingImg) existingImg.remove();
+        // Remove old style tag too
+        const oldStyle = document.getElementById('flexy-banner-style');
+        if (oldStyle) oldStyle.remove();
         if (data.url && data.url !== '') {
-            // Hide overlays that sit on top of background image
-            if (smokeBg) smokeBg.style.display = 'none';
-            if (headerOverlay) headerOverlay.style.display = 'none';
+            // Inject <img> with z-index:9999 — sits on top of EVERYTHING (smoke, overlay, pseudo-elements)
+            const img = document.createElement('img');
+            img.id = 'flexy-banner-img';
+            img.src = data.url + '?t=' + Date.now(); // cache bust
+            img.onerror = function() { console.log('[FLEXY] Banner image failed to load: ' + data.url); };
+            img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:9999;border:0;display:block;';
+            header.appendChild(img);
             if (titleEl) titleEl.style.display = 'none';
-            // Inject style tag to override background with !important
-            let bannerStyle = document.getElementById('flexy-banner-style');
-            if (!bannerStyle) {
-                bannerStyle = document.createElement('style');
-                bannerStyle.id = 'flexy-banner-style';
-                document.head.appendChild(bannerStyle);
-            }
-            bannerStyle.textContent = '.menu-header { background: url(' + data.url + ') center/cover no-repeat !important; }';
         } else {
-            // Restore everything
-            if (smokeBg) smokeBg.style.display = '';
-            if (headerOverlay) headerOverlay.style.display = '';
             if (titleEl) titleEl.style.display = '';
-            const bannerStyle = document.getElementById('flexy-banner-style');
-            if (bannerStyle) bannerStyle.textContent = '';
         }
     }
 });
