@@ -72,6 +72,15 @@ const THEMES = {
         darker: '#082f49',
         border: '#38bdf8',
         glow: 'rgba(14, 165, 233, 0.4)'
+    },
+    // Keloglan - Sicak Bal / Amber Turuncusu (Goz yormayan dogal gunbatimi tonlari)
+    keloglan: {
+        color: '#ea580c',
+        gradient: 'linear-gradient(180deg, #ea580c 0%, #c2410c 60%, #7c2d12 100%)',
+        dark: '#7c2d12',
+        darker: '#431407',
+        border: '#fb923c',
+        glow: 'rgba(234, 88, 12, 0.45)'
     }
 };
 
