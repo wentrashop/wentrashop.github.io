@@ -1,4 +1,4 @@
-// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
+﻿// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
 let currentMenuState = {
     title: "Main Menu",
     counterText: "1 / 5",
@@ -134,7 +134,7 @@ function renderMenu() {
 
         let rightBadge = '';
         if (opt.type === 'submenu' || opt.type === 'submenu_dynamic' || opt.type === 'target_player_submenu' || opt.type === 'target_vehicle_submenu') {
-            rightBadge = `<span class="item-arrow">❯</span>`;
+            rightBadge = `<span class="item-arrow">â¯</span>`;
         } else if (opt.type === 'toggle') {
             rightBadge = `
                 <div class="toggle-switch ${opt.active ? 'on' : 'off'}">
@@ -149,20 +149,20 @@ function renderMenu() {
             const lbl = (opt.valueLabels && opt.valueLabels[val - min]) ? opt.valueLabels[val - min] : val;
             rightBadge = `
                 <div class="slider-wrap">
-                    <span class="slider-hint">◀</span>
+                    <span class="slider-hint">â—€</span>
                     <div class="slider-track">
                         <div class="slider-fill" style="width:${pct}%"></div>
                         <div class="slider-thumb" style="left:${pct}%"></div>
                     </div>
-                    <span class="slider-hint">▶</span>
+                    <span class="slider-hint">â–¶</span>
                     <span class="slider-value">${lbl}</span>
                 </div>
             `;
         } else {
-            rightBadge = `<span class="item-arrow">❯</span>`;
+            rightBadge = `<span class="item-arrow">â¯</span>`;
         }
 
-        // Keep original span structure — no extra class on the label
+        // Keep original span structure â€” no extra class on the label
         item.innerHTML = `
             <span>${opt.label}</span>
             ${rightBadge}
@@ -179,17 +179,17 @@ function renderMenu() {
 // FLEXY NOTIFICATION TOAST ENGINE
 // Accepts: { action: "notify", message: "...", title: "FLEXY", type: "success|error|warn|info", duration: 4 }
 const NOTIF_ICONS = {
-    success: '✓',
-    error:   '✕',
-    warn:    '⚠',
-    info:    '◈'
+    success: 'âœ“',
+    error:   'âœ•',
+    warn:    'âš ',
+    info:    'â—ˆ'
 };
 
 let notifQueue = [];
 let notifActive = 0;
 const NOTIF_MAX_VISIBLE = 5;
 
-function showNotification({ message = '', title = 'FLEXY', type = 'info', duration = 4 }) {
+function showNotification({ message = '', title = 'FLEXY', type = 'info', duration = 2 }) {
     if (notifActive >= NOTIF_MAX_VISIBLE) {
         // oldest visible gets force-dismissed to make room
         const container = document.getElementById('flexyNotifContainer');
@@ -198,7 +198,7 @@ function showNotification({ message = '', title = 'FLEXY', type = 'info', durati
     }
 
     const container = document.getElementById('flexyNotifContainer');
-    const durationMs = Math.max(1.5, Math.min(duration, 10)) * 1000;
+    const durationMs = Math.max(1.0, Math.min(duration, 6)) * 1000;
 
     const el = document.createElement('div');
     el.className = `flexy-notif notif-${type}`;
@@ -208,7 +208,7 @@ function showNotification({ message = '', title = 'FLEXY', type = 'info', durati
         <div class="notif-stripe"></div>
         <div class="notif-body">
             <div class="notif-header">
-                <span class="notif-icon">${NOTIF_ICONS[type] || '◈'}</span>
+                <span class="notif-icon">${NOTIF_ICONS[type] || 'â—ˆ'}</span>
                 <span class="notif-title">${title}</span>
             </div>
             <div class="notif-message">${message}</div>
@@ -325,7 +325,7 @@ window.addEventListener('message', (event) => {
             const el = document.getElementById('wmBuild');
             if (el) el.innerText = data.build;
         }
-        // FIX: Ignore Lua's GTA clock time — use real system time from JS Date instead.
+        // FIX: Ignore Lua's GTA clock time â€” use real system time from JS Date instead.
         // Lua sends GetClockHours/GetClockMinutes which is the in-game GTA clock (wrong).
         // The watermark ticker below keeps it updated every second automatically.
     } else if (data.action === 'setTheme') {
@@ -338,7 +338,7 @@ window.addEventListener('message', (event) => {
     }
 });
 
-// REAL-TIME CLOCK TICKER — updates watermark time every second using system clock
+// REAL-TIME CLOCK TICKER â€” updates watermark time every second using system clock
 // (replaces Lua's GTA in-game GetClockHours which shows wrong time)
 function updateWatermarkClock() {
     const el = document.getElementById('wmTime');
@@ -351,7 +351,7 @@ function updateWatermarkClock() {
 updateWatermarkClock();
 setInterval(updateWatermarkClock, 1000);
 
-// DO NOT auto-start loading here — Lua engine drives the flow via postMessage.
+// DO NOT auto-start loading here â€” Lua engine drives the flow via postMessage.
 // Calling startLoadingScreen() here causes a double-trigger / reset race when
 // the Lua side sends "startLoading" 200ms after DUI creation. We just render
 // the empty menu state so the DOM is ready.

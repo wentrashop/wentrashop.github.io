@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --accent-color: #dc2626;
     --accent-gradient: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
     --accent-dark: #7f1d1d;
@@ -666,10 +666,10 @@ html, body {
     position: absolute;
     bottom: 32px;
     right: 32px;
-    width: 360px;
+    width: 320px;
     display: flex;
     flex-direction: column-reverse;
-    gap: 10px;
+    gap: 8px;
     z-index: 9999;
     pointer-events: none;
 }
@@ -678,10 +678,10 @@ html, body {
     width: 100%;
     background: rgba(10, 10, 13, 0.97);
     border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.85),
-        0 2px 8px rgba(0, 0, 0, 0.6),
+        0 6px 24px rgba(0, 0, 0, 0.85),
+        0 2px 6px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
     display: flex;
     align-items: stretch;
@@ -692,8 +692,8 @@ html, body {
     transform: translateX(calc(100% + 40px));
     opacity: 0;
     transition:
-        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.28s ease;
+        transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.22s ease;
 }
 
 .flexy-notif.notif-show {
@@ -705,83 +705,70 @@ html, body {
     transform: translateX(calc(100% + 40px));
     opacity: 0;
     transition:
-        transform 0.3s cubic-bezier(0.55, 0, 1, 0.45),
-        opacity 0.2s ease;
+        transform 0.26s cubic-bezier(0.55, 0, 1, 0.45),
+        opacity 0.18s ease;
 }
 
-/* Left accent stripe */
+/* Left accent stripe -- ALWAYS theme color, no type override */
 .notif-stripe {
     width: 4px;
     flex-shrink: 0;
     background: var(--accent-gradient);
-    box-shadow: 2px 0 12px var(--accent-glow);
-    position: relative;
-}
-
-/* Animated progress drain bar inside the stripe */
-.notif-stripe::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    transform-origin: bottom;
-    transform: scaleY(0);
-    animation: notifDrain var(--notif-duration, 4s) linear forwards;
-}
-
-@keyframes notifDrain {
-    0%   { transform: scaleY(0); }
-    100% { transform: scaleY(1); }
+    box-shadow: 2px 0 10px var(--accent-glow);
 }
 
 /* Body */
 .notif-body {
     flex: 1;
-    padding: 11px 14px 11px 13px;
+    padding: 8px 12px 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     min-width: 0;
+    position: relative;
+}
+
+/* Full-width horizontal timer bar at the bottom of the notification -- drains left to right, theme color */
+.notif-body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-gradient);
+    box-shadow: 0 0 5px var(--accent-glow);
+    transform-origin: left;
+    transform: scaleX(1);
+    animation: notifDrain var(--notif-duration, 2s) linear forwards;
+}
+
+@keyframes notifDrain {
+    0%   { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
 }
 
 .notif-header {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
 }
 
 .notif-icon {
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1;
     flex-shrink: 0;
 }
 
-/* TYPE-specific icon colors */
+/* TYPE-specific icon colors only -- stripes always follow menu theme */
 .flexy-notif.notif-success .notif-icon { color: #4ade80; }
 .flexy-notif.notif-error   .notif-icon { color: #f87171; }
 .flexy-notif.notif-warn    .notif-icon { color: #fbbf24; }
 .flexy-notif.notif-info    .notif-icon { color: var(--accent-color); }
 
-/* TYPE-specific stripe colors */
-.flexy-notif.notif-success .notif-stripe {
-    background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
-    box-shadow: 2px 0 10px rgba(34, 197, 94, 0.5);
-}
-.flexy-notif.notif-error .notif-stripe {
-    background: linear-gradient(180deg, #ef4444 0%, #991b1b 100%);
-    box-shadow: 2px 0 10px rgba(239, 68, 68, 0.5);
-}
-.flexy-notif.notif-warn .notif-stripe {
-    background: linear-gradient(180deg, #f59e0b 0%, #92400e 100%);
-    box-shadow: 2px 0 10px rgba(245, 158, 11, 0.5);
-}
-
 .notif-title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 900;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -792,10 +779,10 @@ html, body {
 }
 
 .notif-message {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     color: #a1a1aa;
-    line-height: 1.45;
+    line-height: 1.4;
     word-break: break-word;
 }
 
@@ -808,7 +795,7 @@ html, body {
     width: 60%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-    animation: notifShimmer 0.7s ease 0.2s forwards;
+    animation: notifShimmer 0.6s ease 0.1s forwards;
     pointer-events: none;
 }
 
@@ -816,13 +803,11 @@ html, body {
     0%   { left: -60%; }
     100% { left: 130%; }
 }
-
-
 /* ============================================================
    8. SLIDER MENU ITEM
    ============================================================ */
 
-/* Slider item — taller to fit the track */
+/* Slider item â€” taller to fit the track */
 .menu-item.item-type-slider {
     height: 46px;
     padding: 0 16px 0 22px;
@@ -833,7 +818,7 @@ html, body {
     padding-left: 26px;
 }
 
-/* Label inside slider item only — clamp so slider-wrap never overflows */
+/* Label inside slider item only â€” clamp so slider-wrap never overflows */
 .menu-item.item-type-slider > span {
     white-space: nowrap;
     overflow: hidden;
