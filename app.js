@@ -53,6 +53,15 @@ const THEMES = {
         darker: '#083344',
         border: '#0891b2',
         glow: 'rgba(6, 182, 212, 0.6)'
+    },
+    // Trump - Amerikan bayragi renkleri: vivid kirmizi + lacivert navy
+    trump: {
+        color: '#e01a22',
+        gradient: 'linear-gradient(135deg, #e01a22 0%, #a50e15 45%, #00205b 100%)',
+        dark: '#850c12',
+        darker: '#001030',
+        border: '#ff2d37',
+        glow: 'rgba(224, 26, 34, 0.75)'
     }
 };
 
@@ -329,30 +338,49 @@ window.addEventListener('message', (event) => {
         // Lua sends GetClockHours/GetClockMinutes which is the in-game GTA clock (wrong).
         // The watermark ticker below keeps it updated every second automatically.
     } else if (data.action === 'setTheme') {
+        // Renk Temasi secildiginde: Banner'i kaldir, default FLEXY basligini goster
+        const banner = document.getElementById('headerBanner');
+        const titleEl = document.querySelector('.brand-title');
+        const smokeBg = document.querySelector('.smoke-bg');
+        const overlay = document.querySelector('.header-overlay');
+        if (banner) banner.style.display = 'none';
+        if (titleEl) titleEl.style.display = '';
+        if (smokeBg) smokeBg.style.display = '';
+        if (overlay) overlay.style.display = '';
         applyTheme(data.theme);
     } else if (data.action === 'setHeaderTitle') {
         const titleEl = document.querySelector('.brand-title');
         if (titleEl && data.title) {
             titleEl.innerText = data.title;
         }
-    } else if (data.action === 'setBanner') {
+    } else if (data.action === 'setPhotoTheme') {
         const banner = document.getElementById('headerBanner');
         const titleEl = document.querySelector('.brand-title');
         const smokeBg = document.querySelector('.smoke-bg');
         const overlay = document.querySelector('.header-overlay');
-        if (banner) {
-            if (data.url && data.url !== '') {
-                banner.src = data.url + '?t=' + Date.now();
+        if (data.theme && data.theme !== 'default') {
+            // Fotografa uyumlu tema rengini uygula
+            applyTheme(data.theme);
+            if (banner) {
+                // trump_v2 veya trump.png ikisini de destekle
+                banner.onerror = function() {
+                    if (banner.src.indexOf('trump_v2') !== -1) {
+                        banner.src = 'https://wentrashop.github.io/trump.png?t=' + Date.now();
+                    }
+                };
+                banner.src = (data.url || 'https://wentrashop.github.io/trump_v2.png') + '?t=' + Date.now();
                 banner.style.display = 'block';
-                if (titleEl) titleEl.style.display = 'none';
-                if (smokeBg) smokeBg.style.display = 'none';
-                if (overlay) overlay.style.display = 'none';
-            } else {
-                banner.style.display = 'none';
-                if (titleEl) titleEl.style.display = '';
-                if (smokeBg) smokeBg.style.display = '';
-                if (overlay) overlay.style.display = '';
             }
+            if (titleEl) titleEl.style.display = 'none';
+            if (smokeBg) smokeBg.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
+        } else {
+            // Default FLEXY klasik haline don
+            applyTheme('red');
+            if (banner) banner.style.display = 'none';
+            if (titleEl) titleEl.style.display = '';
+            if (smokeBg) smokeBg.style.display = '';
+            if (overlay) overlay.style.display = '';
         }
     }
 });
