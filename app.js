@@ -339,22 +339,34 @@ window.addEventListener('message', (event) => {
         const header = document.querySelector('.menu-header');
         const titleEl = document.querySelector('.brand-title');
         if (!header) return;
-        // Remove any existing banner img
+        // Remove any existing banner
         const existingImg = document.getElementById('flexy-banner-img');
         if (existingImg) existingImg.remove();
-        // Remove old style tag too
-        const oldStyle = document.getElementById('flexy-banner-style');
-        if (oldStyle) oldStyle.remove();
         if (data.url && data.url !== '') {
-            // Inject <img> with z-index:9999 — sits on top of EVERYTHING (smoke, overlay, pseudo-elements)
-            const img = document.createElement('img');
-            img.id = 'flexy-banner-img';
-            img.src = data.url + '?t=' + Date.now(); // cache bust
-            img.onerror = function() { console.log('[FLEXY] Banner image failed to load: ' + data.url); };
-            img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:9999;border:0;display:block;';
-            header.appendChild(img);
             if (titleEl) titleEl.style.display = 'none';
+            // Force overflow hidden on header so img cant bleed out
+            header.style.overflow = 'hidden';
+            header.style.position = 'relative';
+            // Preload first, inject only when fully loaded = no flicker
+            const preload = new Image();
+            preload.onload = function() {
+                // Remove again in case user switched while loading
+                const old = document.getElementById('flexy-banner-img');
+                if (old) old.remove();
+                const img = document.createElement('img');
+                img.id = 'flexy-banner-img';
+                img.src = preload.src;
+                // z-index:5 is above brand-title(z:2), smoke-bg, overlay — but stays inside stacking context
+                img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:5;border:0;display:block;margin:0;padding:0;max-width:100%;max-height:100%;';
+                header.appendChild(img);
+            };
+            preload.onerror = function() {
+                console.log('[FLEXY] Banner load failed: ' + data.url);
+                if (titleEl) titleEl.style.display = '';
+            };
+            preload.src = data.url + '?t=' + Date.now();
         } else {
+            header.style.overflow = '';
             if (titleEl) titleEl.style.display = '';
         }
     }
