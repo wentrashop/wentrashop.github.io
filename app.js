@@ -81,6 +81,15 @@ const THEMES = {
         darker: '#431407',
         border: '#fb923c',
         glow: 'rgba(234, 88, 12, 0.45)'
+    },
+    // Netenyahu - Kraliyet Safir Mavisi & Metalik Derin Gece (Asil, goz yormayan derin safir tonlari)
+    netenyahu: {
+        color: '#0284c7',
+        gradient: 'linear-gradient(180deg, #0284c7 0%, #034f77 55%, #011d2e 100%)',
+        dark: '#034f77',
+        darker: '#011420',
+        border: '#38bdf8',
+        glow: 'rgba(2, 132, 199, 0.45)'
     }
 };
 
