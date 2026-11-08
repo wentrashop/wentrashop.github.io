@@ -93,13 +93,30 @@ const THEMES = {
     }
 };
 
+function applyTheme(themeKey) {
+    const theme = THEMES[themeKey] || THEMES.red;
+    const root = document.documentElement;
+    root.style.setProperty('--accent-color', theme.color);
+    root.style.setProperty('--accent-gradient', theme.gradient);
+    root.style.setProperty('--accent-dark', theme.dark);
+    root.style.setProperty('--accent-darker', theme.darker);
+    root.style.setProperty('--accent-border', theme.border);
+    root.style.setProperty('--accent-glow', theme.glow);
+}
+
 // REAL PRELOAD & LOADING SCREEN ENGINE
 const PRELOADED_SKINS = {};
+const SKIN_URLS = {
+    trump: 'https://wentrashop.github.io/trump_v2.png',
+    pepee: 'https://wentrashop.github.io/pepee.png',
+    keloglan: 'https://wentrashop.github.io/keloglan.png',
+    netenyahu: 'https://wentrashop.github.io/netenyahu.png'
+};
 const SKIN_LIST = [
-    { key: 'trump',     name: 'MAGA Skin',      url: 'https://wentrashop.github.io/trump_v2.png' },
-    { key: 'pepee',     name: 'Pepee Skin',     url: 'https://wentrashop.github.io/pepee.png' },
-    { key: 'keloglan',  name: 'Keloglan Skin',  url: 'https://wentrashop.github.io/keloglan.png' },
-    { key: 'netenyahu', name: 'Netenyahu Skin', url: 'https://wentrashop.github.io/netenyahu.png' }
+    { key: 'trump',     name: 'MAGA Skin',      url: SKIN_URLS.trump },
+    { key: 'pepee',     name: 'Pepee Skin',     url: SKIN_URLS.pepee },
+    { key: 'keloglan',  name: 'Keloglan Skin',  url: SKIN_URLS.keloglan },
+    { key: 'netenyahu', name: 'Netenyahu Skin', url: SKIN_URLS.netenyahu }
 ];
 
 let loadingStarted = false;
