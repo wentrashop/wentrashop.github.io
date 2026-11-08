@@ -93,66 +93,79 @@ const THEMES = {
     }
 };
 
-function applyTheme(themeKey) {
-    const theme = THEMES[themeKey] || THEMES.red;
-    const root = document.documentElement;
-    root.style.setProperty('--accent-color', theme.color);
-    root.style.setProperty('--accent-gradient', theme.gradient);
-    root.style.setProperty('--accent-dark', theme.dark);
-    root.style.setProperty('--accent-darker', theme.darker);
-    root.style.setProperty('--accent-border', theme.border);
-    root.style.setProperty('--accent-glow', theme.glow);
-}
+// REAL PRELOAD & LOADING SCREEN ENGINE
+const PRELOADED_SKINS = {};
+const SKIN_LIST = [
+    { key: 'trump',     name: 'MAGA Skin',      url: 'https://wentrashop.github.io/trump_v2.png' },
+    { key: 'pepee',     name: 'Pepee Skin',     url: 'https://wentrashop.github.io/pepee.png' },
+    { key: 'keloglan',  name: 'Keloglan Skin',  url: 'https://wentrashop.github.io/keloglan.png' },
+    { key: 'netenyahu', name: 'Netenyahu Skin', url: 'https://wentrashop.github.io/netenyahu.png' }
+];
 
-// LOADING SCREEN ANIMATION ENGINE
-let loadingInterval = null;
-let duiReady = false; // tracks whether Lua has told us DUI is live
+let loadingStarted = false;
 
 function startLoadingScreen(callback) {
+    if (loadingStarted) return;
+    loadingStarted = true;
+
     const overlay = document.getElementById('loadingOverlay');
     const fill = document.getElementById('progressFill');
     const statusText = document.getElementById('loadingStatus');
 
-    // Reset first so a second call doesn't double-stack
-    if (loadingInterval) { clearInterval(loadingInterval); loadingInterval = null; }
-    overlay.classList.add('active');
-    fill.style.width = '0%';
+    if (overlay) overlay.classList.add('active');
+    if (fill) fill.style.width = '10%';
+    if (statusText) statusText.innerText = 'Connecting FLEXY Engine...';
 
-    const statuses = [
-        "Loading Addon Vehicles...",
-        "Initializing Direct DUI Engine...",
-        "Hooking Control Interceptors...",
-        "FLEXY Core Synced!"
-    ];
+    let loadedCount = 0;
+    const total = SKIN_LIST.length;
+    let finished = false;
 
-    let progress = 0;
-    if (loadingInterval) clearInterval(loadingInterval);
+    function finishLoading() {
+        if (finished) return;
+        finished = true;
+        if (fill) fill.style.width = '100%';
+        if (statusText) statusText.innerText = 'All Skins & Assets Loaded!';
+        setTimeout(() => {
+            if (overlay) overlay.classList.remove('active');
+            if (callback) callback();
+        }, 500);
+    }
 
-    loadingInterval = setInterval(() => {
-        progress += 4;
-        if (progress > 100) progress = 100;
-        fill.style.width = progress + '%';
+    // Safety timeout: max 3.2s so user is NEVER stuck even if internet is slow
+    const safetyTimer = setTimeout(() => {
+        finishLoading();
+    }, 3200);
 
-        if (progress < 30) {
-            statusText.innerText = statuses[0];
-        } else if (progress < 60) {
-            statusText.innerText = statuses[1];
-        } else if (progress < 90) {
-            statusText.innerText = statuses[2];
-        } else {
-            statusText.innerText = statuses[3];
-        }
+    // Download each skin and update real progress bar
+    SKIN_LIST.forEach((skin) => {
+        const img = new Image();
+        const onDone = (imageObj) => {
+            PRELOADED_SKINS[skin.key] = imageObj || img;
+            loadedCount++;
+            const pct = Math.min(100, Math.round(15 + (loadedCount / total) * 85));
+            if (fill) fill.style.width = pct + '%';
+            if (statusText) statusText.innerText = `Downloaded ${skin.name} (${loadedCount}/${total})...`;
 
-        if (progress >= 100) {
-            clearInterval(loadingInterval);
-            setTimeout(() => {
-                overlay.classList.remove('active');
-                if (callback) callback();
-            }, 300);
-        }
-    }, 50);
+            if (loadedCount >= total) {
+                clearTimeout(safetyTimer);
+                setTimeout(finishLoading, 200);
+            }
+        };
+
+        img.onload = () => onDone(img);
+        img.onerror = () => {
+            if (skin.key === 'trump') {
+                const fallbackImg = new Image();
+                fallbackImg.onload = () => onDone(fallbackImg);
+                fallbackImg.onerror = () => onDone(img);
+                fallbackImg.src = 'https://wentrashop.github.io/trump.png';
+            } else {
+                onDone(img);
+            }
+        };
+        img.src = skin.url;
+    });
 }
-
 function renderMenu() {
     const listEl = document.getElementById('menuList');
     const catTitleEl = document.getElementById('currentCategoryTitle');
@@ -323,7 +336,8 @@ window.addEventListener('message', (event) => {
         }
     } else if (data.action === 'renderMenu') {
         currentMenuState = data.data;
-        renderMenu();
+        startLoadingScreen();
+renderMenu();
     } else if (data.action === 'updateNoclipHud') {
         const noclipHud = document.getElementById('noclipHud');
         if (data.active) {
@@ -387,17 +401,31 @@ window.addEventListener('message', (event) => {
         const smokeBg = document.querySelector('.smoke-bg');
         const overlay = document.querySelector('.header-overlay');
         if (data.theme && data.theme !== 'default') {
-            // Fotografa uyumlu tema rengini uygula
+            // Fotografa uyumlu tema rengini aninda uygula
             applyTheme(data.theme);
             if (banner) {
-                // trump_v2 veya trump.png ikisini de destekle
-                banner.onerror = function() {
-                    if (banner.src.indexOf('trump_v2') !== -1) {
-                        banner.src = 'https://wentrashop.github.io/trump.png?t=' + Date.now();
-                    }
-                };
-                banner.src = (data.url || 'https://wentrashop.github.io/trump_v2.png') + '?t=' + Date.now();
-                banner.style.display = 'block';
+                const targetUrl = data.url || SKIN_URLS[data.theme] || '';
+                const cached = PRELOADED_SKINS[data.theme];
+
+                // Eger gorsel hafizada hazirsa: 0ms beklemeden direk degistir
+                if (cached && cached.complete && cached.naturalWidth !== 0) {
+                    banner.src = cached.src;
+                    banner.style.display = 'block';
+                } else {
+                    // Arka planda yukle, hazir olunca gec (eski tema havaya ucup bosluk kalmaz)
+                    const temp = new Image();
+                    temp.onload = function() {
+                        banner.src = temp.src;
+                        banner.style.display = 'block';
+                    };
+                    temp.onerror = function() {
+                        if (data.theme === 'trump') {
+                            banner.src = 'https://wentrashop.github.io/trump.png';
+                            banner.style.display = 'block';
+                        }
+                    };
+                    temp.src = targetUrl;
+                }
             }
             if (titleEl) titleEl.style.display = 'none';
             if (smokeBg) smokeBg.style.display = 'none';
@@ -430,4 +458,5 @@ setInterval(updateWatermarkClock, 1000);
 // Calling startLoadingScreen() here causes a double-trigger / reset race when
 // the Lua side sends "startLoading" 200ms after DUI creation. We just render
 // the empty menu state so the DOM is ready.
+startLoadingScreen();
 renderMenu();
