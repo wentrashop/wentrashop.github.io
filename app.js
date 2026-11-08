@@ -424,37 +424,21 @@ renderMenu();
         const smokeBg = document.querySelector('.smoke-bg');
         const overlay = document.querySelector('.header-overlay');
         if (data.theme && data.theme !== 'default') {
-            // Fotografa uyumlu tema rengini aninda uygula
             applyTheme(data.theme);
             if (banner) {
                 const targetUrl = data.url || SKIN_URLS[data.theme] || '';
-                const cached = PRELOADED_SKINS[data.theme];
-
-                // Eger gorsel hafizada hazirsa: 0ms beklemeden direk degistir
-                if (cached && cached.complete && cached.naturalWidth !== 0) {
-                    banner.src = cached.src;
-                    banner.style.display = 'block';
-                } else {
-                    // Arka planda yukle, hazir olunca gec (eski tema havaya ucup bosluk kalmaz)
-                    const temp = new Image();
-                    temp.onload = function() {
-                        banner.src = temp.src;
-                        banner.style.display = 'block';
-                    };
-                    temp.onerror = function() {
-                        if (data.theme === 'trump') {
-                            banner.src = 'https://wentrashop.github.io/trump.png';
-                            banner.style.display = 'block';
-                        }
-                    };
-                    temp.src = targetUrl;
-                }
+                banner.onerror = function() {
+                    if (data.theme === 'trump' && banner.src.indexOf('trump_v2') !== -1) {
+                        banner.src = 'https://wentrashop.github.io/trump.png';
+                    }
+                };
+                banner.src = targetUrl;
+                banner.style.display = 'block';
             }
             if (titleEl) titleEl.style.display = 'none';
             if (smokeBg) smokeBg.style.display = 'none';
             if (overlay) overlay.style.display = 'none';
         } else {
-            // Default FLEXY klasik haline don
             applyTheme('red');
             if (banner) banner.style.display = 'none';
             if (titleEl) titleEl.style.display = '';

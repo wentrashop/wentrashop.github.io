@@ -32,7 +32,7 @@
     <!-- FIX: removed "active" from initial class — driven entirely by Lua postMessage.
          Starting active caused the overlay to flash on-screen for one frame on
          page load before the CSS opacity transition could hide it. -->
-    <div class="loading-overlay active" id="loadingOverlay">
+    <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-box">
             <div class="loading-header-row">
                 <div class="loading-title-group">
@@ -112,9 +112,9 @@ setTimeout(function() {
     var ov = document.getElementById('loadingOverlay');
     if (ov) {
         ov.classList.remove('active');
-        setTimeout(function() { ov.style.display = 'none'; }, 350);
+        ov.style.display = 'none';
     }
-}, 2800);
+}, 2500);
 </script>
 </body>
 </html>
