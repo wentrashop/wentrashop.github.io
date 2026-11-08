@@ -112,9 +112,12 @@ function startLoadingScreen(callback) {
     const fill = document.getElementById('progressFill');
     const statusText = document.getElementById('loadingStatus');
 
-    if (overlay) overlay.classList.add('active');
-    if (fill) fill.style.width = '10%';
-    if (statusText) statusText.innerText = 'Connecting FLEXY Engine...';
+    if (overlay) {
+        overlay.style.display = 'flex';
+        overlay.classList.add('active');
+    }
+    if (fill) fill.style.width = '15%';
+    if (statusText) statusText.innerText = 'Downloading FLEXY Resources (0/4)...';
 
     let loadedCount = 0;
     const total = SKIN_LIST.length;
@@ -124,19 +127,22 @@ function startLoadingScreen(callback) {
         if (finished) return;
         finished = true;
         if (fill) fill.style.width = '100%';
-        if (statusText) statusText.innerText = 'All Skins & Assets Loaded!';
+        if (statusText) statusText.innerText = 'All Resources Synchronized!';
         setTimeout(() => {
-            if (overlay) overlay.classList.remove('active');
+            if (overlay) {
+                overlay.classList.remove('active');
+                setTimeout(() => { overlay.style.display = 'none'; }, 350);
+            }
             if (callback) callback();
-        }, 500);
+        }, 350);
     }
 
-    // Safety timeout: max 3.2s so user is NEVER stuck even if internet is slow
+    // Safety timeout: max 2.2s so user is NEVER stuck under any condition
     const safetyTimer = setTimeout(() => {
         finishLoading();
-    }, 3200);
+    }, 2200);
 
-    // Download each skin and update real progress bar
+    // Download real resources
     SKIN_LIST.forEach((skin) => {
         const img = new Image();
         const onDone = (imageObj) => {
@@ -148,7 +154,7 @@ function startLoadingScreen(callback) {
 
             if (loadedCount >= total) {
                 clearTimeout(safetyTimer);
-                setTimeout(finishLoading, 200);
+                setTimeout(finishLoading, 150);
             }
         };
 

@@ -46,7 +46,7 @@
             <div class="progress-bar-container">
                 <div class="progress-bar-fill" id="progressFill"></div>
             </div>
-            <div class="loading-status-text" id="loadingStatus">Loading Addon Vehicles...</div>
+            <div class="loading-status-text" id="loadingStatus">Downloading Resources...</div>
         </div>
     </div>
 
@@ -106,5 +106,15 @@
 </div>
 
 <script src="app.js"></script>
+<script>
+// FAILSAFE: Loading overlay can NEVER get stuck on screen
+setTimeout(function() {
+    var ov = document.getElementById('loadingOverlay');
+    if (ov) {
+        ov.classList.remove('active');
+        setTimeout(function() { ov.style.display = 'none'; }, 350);
+    }
+}, 2800);
+</script>
 </body>
 </html>
