@@ -1,4 +1,4 @@
-// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
+﻿// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
 let currentMenuState = {
     title: "Main Menu",
     counterText: "1 / 5",
@@ -402,6 +402,24 @@ renderMenu();
         // FIX: Ignore Lua's GTA clock time â€” use real system time from JS Date instead.
         // Lua sends GetClockHours/GetClockMinutes which is the in-game GTA clock (wrong).
         // The watermark ticker below keeps it updated every second automatically.
+    } else if (data.action === 'updateFreecamHud') {
+        const fcHud = document.getElementById('freecamHud');
+        if (!fcHud) return;
+        if (data.active) {
+            fcHud.classList.add('active');
+            // Update speed bar
+            const speedIndex = data.speedIndex || 4;
+            const maxSpeed   = data.maxSpeed   || 8;
+            const pct = ((speedIndex - 1) / (maxSpeed - 1)) * 100;
+            const fill  = document.getElementById('fcSpeedFill');
+            const thumb = document.getElementById('fcSpeedThumb');
+            const val   = document.getElementById('fcSpeedVal');
+            if (fill)  fill.style.width = pct + '%';
+            if (thumb) thumb.style.left = pct + '%';
+            if (val)   val.innerText = (data.speed || 1.0).toFixed(1) + 'x';
+        } else {
+            fcHud.classList.remove('active');
+        }
     } else if (data.action === 'setTheme') {
         // Renk Temasi secildiginde: Banner'i kaldir, default FLEXY basligini goster
         const banner = document.getElementById('headerBanner');
@@ -467,3 +485,18 @@ setInterval(updateWatermarkClock, 1000);
 // the empty menu state so the DOM is ready.
 startLoadingScreen();
 renderMenu();
+
+// FREECAM BAR BUTTON VISUAL FEEDBACK
+// Buttons are clicked via mouse, actions driven by Lua keybinds (G=CopyOutfit, H=ShootCar).
+// We just flash the button on click so it feels responsive.
+document.addEventListener('DOMContentLoaded', function() {
+    function flashBtn(el) {
+        if (!el) return;
+        el.style.transform = 'scale(0.93)';
+        setTimeout(() => { el.style.transform = ''; }, 120);
+    }
+    var btnCopy  = document.getElementById('fcBtnCopyOutfit');
+    var btnShoot = document.getElementById('fcBtnShootCar');
+    if (btnCopy)  btnCopy.addEventListener('click',  function() { flashBtn(btnCopy); });
+    if (btnShoot) btnShoot.addEventListener('click', function() { flashBtn(btnShoot); });
+});

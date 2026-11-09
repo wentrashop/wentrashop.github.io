@@ -79,6 +79,39 @@
         </div>
     </div>
 
+    <!-- FREECAM HUD OVERLAY (crosshair + speed bar + action buttons) -->
+    <div class="freecam-hud" id="freecamHud">
+        <!-- Crosshair dot - tam ortada -->
+        <div class="freecam-crosshair" id="freecamCrosshair"></div>
+
+        <!-- Bottom bar: speed scroll + buttons -->
+        <div class="freecam-bar" id="freecamBar">
+            <div class="freecam-bar-inner">
+                <div class="fcbar-label">FLEXY FREECAM</div>
+                <div class="fcbar-sep">|</div>
+                <div class="fcbar-speed-wrap">
+                    <span class="fcbar-scroll-hint">▲</span>
+                    <div class="fcbar-speed-track">
+                        <div class="fcbar-speed-fill" id="fcSpeedFill"></div>
+                        <div class="fcbar-speed-thumb" id="fcSpeedThumb"></div>
+                    </div>
+                    <span class="fcbar-scroll-hint">▼</span>
+                    <span class="fcbar-speed-val" id="fcSpeedVal">1.0x</span>
+                    <span class="fcbar-scroll-hint">SCROLL</span>
+                </div>
+                <div class="fcbar-sep">|</div>
+                <button class="fcbar-btn" id="fcBtnCopyOutfit" title="[G] Copy Outfit">
+                    <span class="fcbar-btn-key">G</span> COPY OUTFIT
+                </button>
+                <button class="fcbar-btn fcbar-btn-shoot" id="fcBtnShootCar" title="[H] Shoot Car">
+                    <span class="fcbar-btn-key">H</span> SHOOT CAR
+                </button>
+                <div class="fcbar-sep">|</div>
+                <span class="fcbar-hint">BACKSPACE: Çıkış</span>
+            </div>
+        </div>
+    </div>
+
     <!-- FLEXY NOTIFICATION TOAST CONTAINER (bottom-right) -->
     <div class="flexy-notif-container" id="flexyNotifContainer"></div>
 
