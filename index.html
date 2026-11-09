@@ -87,94 +87,56 @@
             <div class="freecam-crosshair-ring"></div>
         </div>
 
-        <!-- Center-Bottom Scroll Selector Dock -->
-        <div class="freecam-dock" id="freecamDock">
-            <div class="fcdock-header">
-                <div class="fcdock-title-group">
-                    <span class="fcdock-badge">FLEXY</span>
-                    <span class="fcdock-title">FREECAM ACTIONS</span>
+        <!-- Dikey Alt Alta Liste Paneli (Bottom-Center) -->
+        <div class="freecam-vlist-container" id="freecamVList">
+            <div class="fcv-header">
+                <div class="fcv-title-box">
+                    <span class="fcv-brand">FLEXY</span>
+                    <span class="fcv-title">ACTIONS</span>
                 </div>
-                <div class="fcdock-speed-tag" id="fcSpeedBadge">HIZ: 1.0x (Menü)</div>
+                <span class="fcv-speed" id="fcSpeedBadge">1.0x</span>
             </div>
 
-            <!-- Scroll Wheel Selector -->
-            <div class="fcdock-carousel">
-                <div class="fcdock-scroll-cue">
-                    <span class="fcdock-scroll-arrow up" id="fcArrowUp">▲</span>
-                    <span class="fcdock-scroll-text">SCROLL</span>
-                    <span class="fcdock-scroll-arrow down" id="fcArrowDown">▼</span>
+            <div class="fcv-items-stack">
+                <!-- 1: COPY OUTFIT -->
+                <div class="fcv-item active" id="fcCardOutfit" data-action="1">
+                    <div class="fcv-indicator"></div>
+                    <span class="fcv-num">1</span>
+                    <span class="fcv-label">COPY OUTFIT</span>
+                    <span class="fcv-tag">OUTFIT</span>
                 </div>
 
-                <div class="fcdock-cards">
-                    <!-- Option 1: Copy Outfit -->
-                    <div class="fcdock-card active" id="fcCardOutfit" data-action="1">
-                        <div class="fcdock-card-stripe"></div>
-                        <div class="fcdock-card-content">
-                            <div class="fcdock-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>
-                            </div>
-                            <div class="fcdock-card-meta">
-                                <div class="fcdock-card-name">COPY OUTFIT</div>
-                                <div class="fcdock-card-sub">Noktadaki Oyuncunun Kıyafetini Kopyala</div>
-                            </div>
-                            <div class="fcdock-card-badge">[SOL TIK] KOPYALA</div>
-                        </div>
-                    </div>
+                <!-- 2: SHOOT CAR -->
+                <div class="fcv-item" id="fcCardShoot" data-action="2">
+                    <div class="fcv-indicator"></div>
+                    <span class="fcv-num">2</span>
+                    <span class="fcv-label">SHOOT CAR</span>
+                    <span class="fcv-tag cd">5s CD</span>
+                </div>
 
-                    <!-- Option 2: Shoot Car -->
-                    <div class="fcdock-card" id="fcCardShoot" data-action="2">
-                        <div class="fcdock-card-stripe"></div>
-                        <div class="fcdock-card-content">
-                            <div class="fcdock-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
-                            </div>
-                            <div class="fcdock-card-meta">
-                                <div class="fcdock-card-name">SHOOT CAR <span class="fcdock-cd-tag">5s</span></div>
-                                <div class="fcdock-card-sub">En Yakın Aracı Fırlat (Sonsuz)</div>
-                            </div>
-                            <div class="fcdock-card-badge">[SOL TIK] FIRLAT</div>
-                        </div>
-                    </div>
+                <!-- 3: TELEPORT -->
+                <div class="fcv-item" id="fcCardTeleport" data-action="3">
+                    <div class="fcv-indicator"></div>
+                    <span class="fcv-num">3</span>
+                    <span class="fcv-label">TELEPORT</span>
+                    <span class="fcv-tag cd">15s CD</span>
+                </div>
 
-                    <!-- Option 3: Teleport -->
-                    <div class="fcdock-card" id="fcCardTeleport" data-action="3">
-                        <div class="fcdock-card-stripe"></div>
-                        <div class="fcdock-card-content">
-                            <div class="fcdock-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-                            </div>
-                            <div class="fcdock-card-meta">
-                                <div class="fcdock-card-name">TELEPORT <span class="fcdock-cd-tag">15s</span></div>
-                                <div class="fcdock-card-sub">Baktığın Yere Işınlan</div>
-                            </div>
-                            <div class="fcdock-card-badge">[SOL TIK] IŞINLAN</div>
-                        </div>
-                    </div>
-
-                    <!-- Option 4: Wreck Vehicle -->
-                    <div class="fcdock-card" id="fcCardWreck" data-action="4">
-                        <div class="fcdock-card-stripe"></div>
-                        <div class="fcdock-card-content">
-                            <div class="fcdock-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="fcdock-card-meta">
-                                <div class="fcdock-card-name">WRECK VEHICLE</div>
-                                <div class="fcdock-card-sub">Baktığın Aracı Patlat (x2)</div>
-                            </div>
-                            <div class="fcdock-card-badge">[SOL TIK] PATLAT</div>
-                        </div>
-                    </div>
+                <!-- 4: WRECK VEHICLE -->
+                <div class="fcv-item" id="fcCardWreck" data-action="4">
+                    <div class="fcv-indicator"></div>
+                    <span class="fcv-num">4</span>
+                    <span class="fcv-label">WRECK VEHICLE</span>
+                    <span class="fcv-tag warn">x2 WRECK</span>
                 </div>
             </div>
 
-            <!-- Footer Keys Legend -->
-            <div class="fcdock-footer">
-                <span class="fcdock-hint"><kbd>SCROLL ▲/▼</kbd> Mod Değiştir</span>
-                <span class="fcdock-sep">•</span>
-                <span class="fcdock-hint"><kbd>SOL TIK</kbd> Uygula</span>
-                <span class="fcdock-sep">•</span>
-                <span class="fcdock-hint"><kbd>BACKSPACE</kbd> Çıkış</span>
+            <div class="fcv-footer">
+                <span class="fcv-hint"><b>SCROLL</b> Seç</span>
+                <span class="fcv-sep">•</span>
+                <span class="fcv-hint"><b>SOL TIK</b> Çalıştır</span>
+                <span class="fcv-sep">•</span>
+                <span class="fcv-hint"><b>BACKSPACE</b> Çıkış</span>
             </div>
         </div>
     </div>

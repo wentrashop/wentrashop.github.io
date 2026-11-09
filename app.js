@@ -426,21 +426,10 @@ renderMenu();
                 }
             });
 
-            // Arrow pulse feedback
-            const arrowUp   = document.getElementById('fcArrowUp');
-            const arrowDown = document.getElementById('fcArrowDown');
-            if (data.dir === 'up' && arrowUp) {
-                arrowUp.classList.add('pulse');
-                setTimeout(() => arrowUp.classList.remove('pulse'), 180);
-            } else if (data.dir === 'down' && arrowDown) {
-                arrowDown.classList.add('pulse');
-                setTimeout(() => arrowDown.classList.remove('pulse'), 180);
-            }
-            
             // Update speed badge from menu setting
             const speedBadge = document.getElementById('fcSpeedBadge');
             if (speedBadge && data.speed !== undefined) {
-                speedBadge.innerText = `HIZ: ${(data.speed).toFixed(1)}x (Menü)`;
+                speedBadge.innerText = `${(data.speed).toFixed(1)}x`;
             }
         } else {
             fcHud.classList.remove('active');
