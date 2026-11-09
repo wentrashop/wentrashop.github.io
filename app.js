@@ -1,4 +1,4 @@
-﻿// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
+// FLEXY DUI FRONTEND RENDER ENGINE (DRIVEN 100% BY LUA ENGINE STATE)
 let currentMenuState = {
     title: "Main Menu",
     counterText: "1 / 5",
@@ -407,16 +407,41 @@ renderMenu();
         if (!fcHud) return;
         if (data.active) {
             fcHud.classList.add('active');
-            // Update speed bar
-            const speedIndex = data.speedIndex || 4;
-            const maxSpeed   = data.maxSpeed   || 8;
-            const pct = ((speedIndex - 1) / (maxSpeed - 1)) * 100;
-            const fill  = document.getElementById('fcSpeedFill');
-            const thumb = document.getElementById('fcSpeedThumb');
-            const val   = document.getElementById('fcSpeedVal');
-            if (fill)  fill.style.width = pct + '%';
-            if (thumb) thumb.style.left = pct + '%';
-            if (val)   val.innerText = (data.speed || 1.0).toFixed(1) + 'x';
+            
+            // Update scroll action index (1 = Outfit, 2 = Shoot Car, 3 = Teleport, 4 = Wreck Vehicle)
+            const actionIdx = data.actionIndex || 1;
+            const cards = [
+                document.getElementById('fcCardOutfit'),
+                document.getElementById('fcCardShoot'),
+                document.getElementById('fcCardTeleport'),
+                document.getElementById('fcCardWreck')
+            ];
+            
+            cards.forEach((c, idx) => {
+                if (!c) return;
+                if ((idx + 1) === actionIdx) {
+                    c.classList.add('active');
+                } else {
+                    c.classList.remove('active');
+                }
+            });
+
+            // Arrow pulse feedback
+            const arrowUp   = document.getElementById('fcArrowUp');
+            const arrowDown = document.getElementById('fcArrowDown');
+            if (data.dir === 'up' && arrowUp) {
+                arrowUp.classList.add('pulse');
+                setTimeout(() => arrowUp.classList.remove('pulse'), 180);
+            } else if (data.dir === 'down' && arrowDown) {
+                arrowDown.classList.add('pulse');
+                setTimeout(() => arrowDown.classList.remove('pulse'), 180);
+            }
+            
+            // Update speed badge from menu setting
+            const speedBadge = document.getElementById('fcSpeedBadge');
+            if (speedBadge && data.speed !== undefined) {
+                speedBadge.innerText = `HIZ: ${(data.speed).toFixed(1)}x (Menü)`;
+            }
         } else {
             fcHud.classList.remove('active');
         }
@@ -486,17 +511,15 @@ setInterval(updateWatermarkClock, 1000);
 startLoadingScreen();
 renderMenu();
 
-// FREECAM BAR BUTTON VISUAL FEEDBACK
-// Buttons are clicked via mouse, actions driven by Lua keybinds (G=CopyOutfit, H=ShootCar).
-// We just flash the button on click so it feels responsive.
+// FREECAM CARDS VISUAL FEEDBACK
 document.addEventListener('DOMContentLoaded', function() {
-    function flashBtn(el) {
+    function flashCard(el) {
         if (!el) return;
-        el.style.transform = 'scale(0.93)';
+        el.style.transform = 'scale(0.96)';
         setTimeout(() => { el.style.transform = ''; }, 120);
     }
-    var btnCopy  = document.getElementById('fcBtnCopyOutfit');
-    var btnShoot = document.getElementById('fcBtnShootCar');
-    if (btnCopy)  btnCopy.addEventListener('click',  function() { flashBtn(btnCopy); });
-    if (btnShoot) btnShoot.addEventListener('click', function() { flashBtn(btnShoot); });
+    ['fcCardOutfit', 'fcCardShoot', 'fcCardTeleport', 'fcCardWreck'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', function() { flashCard(el); });
+    });
 });
