@@ -408,7 +408,7 @@ renderMenu();
         if (data.active) {
             fcHud.classList.add('active');
             
-            // Update scroll action index (1 = Outfit, 2 = Shoot Car, 3 = Teleport, 4 = Wreck Vehicle, 5 = Bug Vehicle, 6 = Efekt Cagir)
+            // Update scroll action index (1 = Outfit, 2 = Shoot Car, 3 = Teleport, 4 = Wreck Vehicle, 5 = Bug Vehicle, 6 = Physics Gun)
             const actionIdx = data.actionIndex || 1;
             const cards = [
                 document.getElementById('fcCardOutfit'),
@@ -416,7 +416,7 @@ renderMenu();
                 document.getElementById('fcCardTeleport'),
                 document.getElementById('fcCardWreck'),
                 document.getElementById('fcCardBug'),
-                document.getElementById('fcCardFx')
+                document.getElementById('fcCardPhysgun')
             ];
             
             cards.forEach((c, idx) => {
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transform = 'scale(0.96)';
         setTimeout(() => { el.style.transform = ''; }, 120);
     }
-    ['fcCardOutfit', 'fcCardShoot', 'fcCardTeleport', 'fcCardWreck', 'fcCardBug', 'fcCardFx'].forEach(function(id) {
+    ['fcCardOutfit', 'fcCardShoot', 'fcCardTeleport', 'fcCardWreck', 'fcCardBug', 'fcCardPhysgun'].forEach(function(id) {
         var el = document.getElementById(id);
         if (el) el.addEventListener('click', function() { flashCard(el); });
     });
